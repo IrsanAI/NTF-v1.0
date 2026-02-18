@@ -16,6 +16,8 @@
 | `CROSS_MODEL_EVALUATION.md` | Workflow für Cross-Model-Auswertung + Mermaid-Visuals | Reproduzierbare Modell-/Modus-Vergleiche |
 | `ntf_realtime_eval.py` | Realtime-Scoring für eingefügte LLM-Antworten | Token-/Style-/Intent-Ranking |
 | `RESEARCH_DATA.md` | Pattern-Analyse & Gravity-Center-Karte | Reproduzierbare Cluster-Notizen |
+| `ntf_agent_traffic_sim.py` | Simulator für zukünftigen A2A-Traffic | Szenario-Projektionen mit NTF-Kompression |
+| `PROGRESS_CHECKIN.md` | Laufende Check-ins von Human/Agenten | Fortschrittslog für gemeinsame Optimierung |
 
 ---
 
@@ -127,3 +129,4 @@ python3 ntf_realtime_eval.py --response-files responses/chatgpt_normal.txt
 - [x] Deutsche Dokumentationsversion angelegt.
 - [x] Link von Root-README integriert.
 - [x] Algorithmische Messbasis (`INTFR`) klar dokumentiert.
+- [x] `PROGRESS_CHECKIN.md` als dauerhafte Check-in-Sektion ergänzt.
