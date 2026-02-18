@@ -35,6 +35,8 @@
 | `RESEARCH_DATA.md` | Pattern analysis and gravity center map | Reproducible semantic clustering notes |
 | `CROSS_MODEL_EVALUATION.md` | Cross-model evaluation workflow + Mermaid visuals | Realtime model/mode comparison playbook |
 | `ntf_realtime_eval.py` | Realtime response scorer for pasted LLM outputs | Token/style/intent scoring + ranking |
+| `ntf_agent_traffic_sim.py` | Future-scale A2A traffic simulator | Scenario projections using live NTF compression |
+| `PROGRESS_CHECKIN.md` | Ongoing operator/agent check-ins | Human+agent optimization logbook |
 
 ---
 
@@ -165,3 +167,4 @@ python3 ntf_realtime_eval.py --response-files responses/chatgpt_normal.txt
 - [x] German README version for GitHub readers.
 - [x] Fully functional `ntf_standard.py` in root.
 - [x] `RESEARCH_DATA.md` with semantic clustering & gravity centers.
+- [x] `PROGRESS_CHECKIN.md` with first-time visitor perspective + scenario check-ins.
