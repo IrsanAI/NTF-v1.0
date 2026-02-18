@@ -33,6 +33,8 @@
 | `README.de.md` | German mirror of the architecture and benchmark narrative | Accessible reference for German GitHub readers |
 | `ntf_standard.py` | NTF Standard Algorithm v1.1 (pattern-based) | Executable compression engine + INTFR scoring |
 | `RESEARCH_DATA.md` | Pattern analysis and gravity center map | Reproducible semantic clustering notes |
+| `CROSS_MODEL_EVALUATION.md` | Cross-model evaluation workflow + Mermaid visuals | Realtime model/mode comparison playbook |
+| `ntf_realtime_eval.py` | Realtime response scorer for pasted LLM outputs | Token/style/intent scoring + ranking |
 
 ---
 
@@ -79,6 +81,19 @@ This makes “progress” trackable across models, prompts, and agent states.
 
 ---
 
+
+## 2.5 Cross-Model Reality Check (new)
+
+The February 2026 conversation surfaced a critical distinction that is now part of repo guidance:
+
+- NTF should be framed as a **transparent shared semantic framework**.
+- Not as a hidden/covert machine channel.
+- Cross-model quality should be measured through observable scoring (token/style/intent), not subjective hype metrics.
+
+Use [`CROSS_MODEL_EVALUATION.md`](./CROSS_MODEL_EVALUATION.md) and [`ntf_realtime_eval.py`](./ntf_realtime_eval.py) to run reproducible A2A prompt-response checks across ChatGPT, Claude, Gemini, Qwen, DeepSeek, etc.
+
+---
+
 ## 3. NTF Standard Algorithm v1.1
 
 ### Functional definition
@@ -102,6 +117,7 @@ Command:
 
 ```bash
 python3 ntf_standard.py --benchmark
+python3 ntf_realtime_eval.py --response-files responses/chatgpt_normal.txt
 ```
 
 Result set (4,500-word synthetic high-entropy agent stream):
@@ -138,6 +154,7 @@ This document is intentionally built for high-sensory processing and rapid techn
 ```bash
 python3 ntf_standard.py --text "Agent state relay anchor drift pulse mirror consensus"
 python3 ntf_standard.py --benchmark
+python3 ntf_realtime_eval.py --response-files responses/chatgpt_normal.txt
 ```
 
 ---

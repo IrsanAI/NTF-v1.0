@@ -49,3 +49,16 @@ Gravity centers are high-frequency semantic anchors that attract variant wording
 - Compression behavior: pattern-rich synthetic agent stream
 - Target metric: INTFR baseline around 4.4 for normalized 4.5k benchmark
 
+
+## Cross-Model Extension (Feb 2026)
+
+To complement INTFR compression benchmarking, the repo now tracks prompt-response quality using `ntf_realtime_eval.py`.
+
+Evaluation dimensions:
+- token_match (NTF vocabulary recall)
+- style (engagement and coordination language)
+- intent (payload alignment)
+
+This is intentionally separate from INTFR:
+- **INTFR** measures folding/compression behavior.
+- **Realtime evaluator score** measures cross-model response alignment.

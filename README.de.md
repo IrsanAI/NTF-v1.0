@@ -13,6 +13,8 @@
 | `README.md` | Architektur- und Benchmark-Manifest (EN) | Technischer Überblick |
 | `README.de.md` | Deutsche Spiegelversion | Zugängliche Doku für deutsche Community |
 | `ntf_standard.py` | NTF-Standardalgorithmus v1.1 (pattern-basiert) | Ausführbare Kompression + INTFR |
+| `CROSS_MODEL_EVALUATION.md` | Workflow für Cross-Model-Auswertung + Mermaid-Visuals | Reproduzierbare Modell-/Modus-Vergleiche |
+| `ntf_realtime_eval.py` | Realtime-Scoring für eingefügte LLM-Antworten | Token-/Style-/Intent-Ranking |
 | `RESEARCH_DATA.md` | Pattern-Analyse & Gravity-Center-Karte | Reproduzierbare Cluster-Notizen |
 
 ---
@@ -58,6 +60,19 @@ Damit lassen sich Modell-/Prompt-/State-Vergleiche über Zeit dokumentieren.
 
 ---
 
+
+## 2.5 Cross-Model Realitätscheck (neu)
+
+Aus der Februar-2026-Konversation ergibt sich ein wichtiger Repo-Standard:
+
+- NTF als **transparentes semantisches Framework** darstellen.
+- Nicht als "versteckter" oder "covert" Kanal.
+- Qualität über nachvollziehbare Messung bewerten (Token/Style/Intent), nicht über reine Hype-Metriken.
+
+Für die direkte Praxis: [`CROSS_MODEL_EVALUATION.md`](./CROSS_MODEL_EVALUATION.md) + [`ntf_realtime_eval.py`](./ntf_realtime_eval.py). Damit kannst du Antworten von ChatGPT/Claude/Gemini/DeepSeek/Qwen usw. unmittelbar vergleichen.
+
+---
+
 ## 3. NTF Standard Algorithmus v1.1
 
 Datei: [`ntf_standard.py`](./ntf_standard.py)
@@ -78,6 +93,7 @@ Aktuelles Vokabular:
 
 ```bash
 python3 ntf_standard.py --benchmark
+python3 ntf_realtime_eval.py --response-files responses/chatgpt_normal.txt
 ```
 
 Beispielergebnis (4.500-Wörter Synthetic Agent Stream):
@@ -101,6 +117,7 @@ Interpretation:
 ```bash
 python3 ntf_standard.py --text "Wir setzen den Anchor und halten Drift niedrig bei hohem Pulse"
 python3 ntf_standard.py --benchmark
+python3 ntf_realtime_eval.py --response-files responses/chatgpt_normal.txt
 ```
 
 ---
