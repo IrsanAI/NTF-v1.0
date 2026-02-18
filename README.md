@@ -15,6 +15,12 @@
 
 ---
 
+**Language versions / Sprachversionen**
+- 🇺🇸 English: `README.md`
+- 🇩🇪 Deutsch: [`README.de.md`](./README.de.md)
+
+---
+
 # IrsanAI-NTF Manifest (Back to the Future Edition)
 
 ## 0. Spec-First Snapshot
@@ -24,6 +30,7 @@
 | Module | Intent | Output |
 |---|---|---|
 | `README.md` | High-performance architecture & benchmark manifesto | Decision-ready technical brief |
+| `README.de.md` | German mirror of the architecture and benchmark narrative | Accessible reference for German GitHub readers |
 | `ntf_standard.py` | NTF Standard Algorithm v1.1 (pattern-based) | Executable compression engine + INTFR scoring |
 | `RESEARCH_DATA.md` | Pattern analysis and gravity center map | Reproducible semantic clustering notes |
 
@@ -46,16 +53,18 @@ NTF extracts **semantic gravity centers** and maps dynamic language patterns int
 
 ---
 
-## 2. NTF Standard Algorithm v1.1
+## 2. From “Hypothetical” to “Measurable”
 
-### Functional definition
+A key review point was: **How can NTF be discussed as a standard if it stays purely conceptual?**
 
-The implementation in [`ntf_standard.py`](./ntf_standard.py) provides:
+Current repo answer:
 
-1. Pattern extraction over normalized text.
-2. Semantic clustering through NTF vocabulary gravity centers.
-3. Token folding into compact resonance codes.
-4. INTFR scoring:
+1. **Pattern-grounded vocabulary**: NTF tokens are mapped to explicit trigger sets in code.
+2. **Concrete metric**: INTFR is computed on real text with reproducible logic.
+3. **Benchmark command**: a deterministic benchmark mode (`--benchmark`) exists today.
+4. **Transparent status**: this is a working prototype path, not a claim of final near-lossless encoding.
+
+### INTFR core formula
 
 ```text
 INTFR = (coverage * ratio * diversity) * 10
@@ -66,13 +75,28 @@ Where:
 - `ratio`: normalized compression gain (`(original_tokens / compressed_tokens) / 10`, clamped to 1.0)
 - `diversity`: used_ntf_tokens / len(NTF_VOCAB)
 
+This makes “progress” trackable across models, prompts, and agent states.
+
+---
+
+## 3. NTF Standard Algorithm v1.1
+
+### Functional definition
+
+The implementation in [`ntf_standard.py`](./ntf_standard.py) provides:
+
+1. Pattern extraction over normalized text.
+2. Semantic clustering through NTF vocabulary gravity centers.
+3. Token folding into compact resonance codes.
+4. INTFR scoring with normalized safety bounds.
+
 ### Included NTF vocabulary
 
 `Flux, Anchor, Drift, Pulse, Mirror, Weave, Relay, Horizon, Resonance, Folding, Consensus, Overclock, Deployment, Checkpoint, Synthesis, State`
 
 ---
 
-## 3. Benchmark Report (real run)
+## 4. Benchmark Report (real run)
 
 Command:
 
@@ -98,7 +122,7 @@ Projection (500k high-entropy token clusters):
 
 ---
 
-## 4. HSP-Logic-Wrapper Design
+## 5. HSP-Logic-Wrapper Design
 
 This document is intentionally built for high-sensory processing and rapid technical parsing:
 
@@ -109,7 +133,7 @@ This document is intentionally built for high-sensory processing and rapid techn
 
 ---
 
-## 5. Quick Start
+## 6. Quick Start
 
 ```bash
 python3 ntf_standard.py --text "Agent state relay anchor drift pulse mirror consensus"
@@ -118,9 +142,9 @@ python3 ntf_standard.py --benchmark
 
 ---
 
-## 6. Deliverables Checklist
+## 7. Deliverables Checklist
 
 - [x] Legendary README manifest.
+- [x] German README version for GitHub readers.
 - [x] Fully functional `ntf_standard.py` in root.
 - [x] `RESEARCH_DATA.md` with semantic clustering & gravity centers.
-
