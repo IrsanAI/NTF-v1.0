@@ -18,6 +18,10 @@
 | `RESEARCH_DATA.md` | Pattern-Analyse & Gravity-Center-Karte | Reproduzierbare Cluster-Notizen |
 | `ntf_agent_traffic_sim.py` | Simulator für zukünftigen A2A-Traffic | Szenario-Projektionen mit NTF-Kompression |
 | `PROGRESS_CHECKIN.md` | Laufende Check-ins von Human/Agenten | Fortschrittslog für gemeinsame Optimierung |
+| `docs/architecture/` | ADRs + Threat-Model für Phase-0-Härtung | Umsetzbare Governance-Basis |
+| `docker/` | Lokales Compose-Profil für MindMaster-MVP | Reproduzierbare Laufzeit für web/core/vault/worker |
+| `src/mindmaster_core/` | Core-Skelette (Orchestrator + Vault) | ToS-sicheres Sync- und Encryption-Scaffolding |
+| `MINDMASTER_PROXY_BLUEPRINT.de.md` | MindMaster Proxy – v2 Blueprint | Konkreter Blueprint + Phase-Checklist + Repo-Struktur |
 
 ---
 
@@ -113,6 +117,20 @@ Interpretation:
 - Weitere Trigger-/Gewichtsoptimierung nötig für höhere INTFR-Zonen.
 
 ---
+
+
+## MindMaster MVP starten (local profile)
+
+```bash
+git clone <dein-fork-oder-repo-url>
+cd NTF-v1.0
+cp docker/.env.example docker/.env
+docker compose -f docker/docker-compose.yml --profile local up -d
+```
+
+Hinweise:
+- Phase-1 bleibt bewusst eng (zuerst nur ein Provider).
+- `MM_PROVIDER_ALLOWLIST=grok` beibehalten, bis Audit/Drift-Metriken stabil sind.
 
 ## 5. Quick Start
 

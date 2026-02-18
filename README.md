@@ -37,6 +37,10 @@
 | `ntf_realtime_eval.py` | Realtime response scorer for pasted LLM outputs | Token/style/intent scoring + ranking |
 | `ntf_agent_traffic_sim.py` | Future-scale A2A traffic simulator | Scenario projections using live NTF compression |
 | `PROGRESS_CHECKIN.md` | Ongoing operator/agent check-ins | Human+agent optimization logbook |
+| `docs/architecture/` | ADRs + threat model for Phase 0 hardening | Implementation-ready governance baseline |
+| `docker/` | Local compose profile for MindMaster MVP | Reproducible web/core/vault/worker runtime |
+| `src/mindmaster_core/` | Core skeletons (orchestrator + vault) | ToS-safe sync and encryption scaffolding |
+| `MINDMASTER_PROXY_BLUEPRINT.de.md` | MindMaster Proxy – v2 Blueprint | Concrete blueprint + phase checklist + repo structure |
 
 ---
 
@@ -150,6 +154,19 @@ This document is intentionally built for high-sensory processing and rapid techn
 - **Fast operational handoff**: direct mapping from narrative to executable artifact.
 
 ---
+
+## MindMaster MVP (local profile)
+
+```bash
+git clone <your-fork-or-repo-url>
+cd NTF-v1.0
+cp docker/.env.example docker/.env
+docker compose -f docker/docker-compose.yml --profile local up -d
+```
+
+Notes:
+- Phase-1 scope is intentionally narrow (single provider first).
+- Keep `MM_PROVIDER_ALLOWLIST=grok` until audit and drift checks are stable.
 
 ## 6. Quick Start
 

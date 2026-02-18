@@ -1,0 +1,82 @@
+version: "3.9"
+
+name: mindmaster-local
+
+services:
+  web:
+    image: python:3.11-slim
+    container_name: mindmaster-web
+    working_dir: /app
+    command: bash -lc "python -m http.server 8080"
+    volumes:
+      - ../src/mindmaster_web:/app:rw
+    env_file:
+      - .env
+    ports:
+      - "${WEB_PORT:-8080}:8080"
+    depends_on:
+      - core
+    profiles: ["local"]
+
+  core:
+    image: python:3.11-slim
+    container_name: mindmaster-core
+    working_dir: /app
+    command: bash -lc "python -m mindmaster_core.connector_orchestrator"
+    volumes:
+      - ../src:/app:rw
+      - mindmaster_encrypted_data:/data/encrypted
+      - mindmaster_logs:/data/logs
+    environment:
+      - PYTHONPATH=/app
+      - MM_QUIET_MODE=${MM_QUIET_MODE:-true}
+      - MM_RATE_LIMIT_PER_MIN=${MM_RATE_LIMIT_PER_MIN:-30}
+      - MM_POLICY_MODE=${MM_POLICY_MODE:-hybrid}
+    env_file:
+      - .env
+    depends_on:
+      - vault
+    profiles: ["local"]
+
+  vault:
+    image: python:3.11-slim
+    container_name: mindmaster-vault
+    working_dir: /app
+    command: bash -lc "python -m http.server 9090"
+    volumes:
+      - mindmaster_encrypted_data:/vault/encrypted
+      - mindmaster_key_material:/vault/keys
+    env_file:
+      - .env
+    ports:
+      - "${VAULT_PORT:-9090}:9090"
+    profiles: ["local"]
+
+  worker:
+    image: python:3.11-slim
+    container_name: mindmaster-worker
+    working_dir: /app
+    command: bash -lc "python -m mindmaster_core.connector_orchestrator --worker-loop"
+    volumes:
+      - ../src:/app:rw
+      - mindmaster_encrypted_data:/data/encrypted
+      - mindmaster_logs:/data/logs
+    environment:
+      - PYTHONPATH=/app
+      - MM_QUIET_MODE=${MM_QUIET_MODE:-true}
+      - MM_RATE_LIMIT_PER_MIN=${MM_RATE_LIMIT_PER_MIN:-30}
+      - MM_BACKOFF_BASE_MS=${MM_BACKOFF_BASE_MS:-500}
+    env_file:
+      - .env
+    depends_on:
+      - core
+      - vault
+    profiles: ["local"]
+
+volumes:
+  mindmaster_encrypted_data:
+    name: mindmaster_encrypted_data
+  mindmaster_key_material:
+    name: mindmaster_key_material
+  mindmaster_logs:
+    name: mindmaster_logs
