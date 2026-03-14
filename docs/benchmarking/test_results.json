@@ -1,0 +1,450 @@
+{
+  "timestamp": "2026-03-14 13:26:48",
+  "total_tests": 77,
+  "passed": 76,
+  "failed": 1,
+  "success_rate": 98.7,
+  "suites": {
+    "Unit Tests: Normalisierung": {
+      "passed": 4,
+      "failed": 0,
+      "success_rate": 100.0,
+      "tests": [
+        {
+          "name": "normalize('Hello World')",
+          "passed": true,
+          "message": "Expected ['hello', 'world'], got ['hello', 'world']"
+        },
+        {
+          "name": "normalize('test-case')",
+          "passed": true,
+          "message": "Expected ['test', 'case'], got ['test', 'case']"
+        },
+        {
+          "name": "normalize('123 abc')",
+          "passed": true,
+          "message": "Expected ['123', 'abc'], got ['123', 'abc']"
+        },
+        {
+          "name": "normalize('')",
+          "passed": true,
+          "message": "Expected [], got []"
+        }
+      ]
+    },
+    "Unit Tests: Keyword-Mapping": {
+      "passed": 48,
+      "failed": 0,
+      "success_rate": 100.0,
+      "tests": [
+        {
+          "name": "keyword_map(flux)",
+          "passed": true,
+          "message": "Mapped to Flux"
+        },
+        {
+          "name": "keyword_map(change)",
+          "passed": true,
+          "message": "Mapped to Flux"
+        },
+        {
+          "name": "keyword_map(anchor)",
+          "passed": true,
+          "message": "Mapped to Anchor"
+        },
+        {
+          "name": "keyword_map(baseline)",
+          "passed": true,
+          "message": "Mapped to Anchor"
+        },
+        {
+          "name": "keyword_map(drift)",
+          "passed": true,
+          "message": "Mapped to Drift"
+        },
+        {
+          "name": "keyword_map(deviation)",
+          "passed": true,
+          "message": "Mapped to Drift"
+        },
+        {
+          "name": "keyword_map(pulse)",
+          "passed": true,
+          "message": "Mapped to Pulse"
+        },
+        {
+          "name": "keyword_map(heartbeat)",
+          "passed": true,
+          "message": "Mapped to Pulse"
+        },
+        {
+          "name": "keyword_map(mirror)",
+          "passed": true,
+          "message": "Mapped to Mirror"
+        },
+        {
+          "name": "keyword_map(reflect)",
+          "passed": true,
+          "message": "Mapped to Mirror"
+        },
+        {
+          "name": "keyword_map(weave)",
+          "passed": true,
+          "message": "Mapped to Weave"
+        },
+        {
+          "name": "keyword_map(combine)",
+          "passed": true,
+          "message": "Mapped to Weave"
+        },
+        {
+          "name": "keyword_map(relay)",
+          "passed": true,
+          "message": "Mapped to Relay"
+        },
+        {
+          "name": "keyword_map(handoff)",
+          "passed": true,
+          "message": "Mapped to Relay"
+        },
+        {
+          "name": "keyword_map(horizon)",
+          "passed": true,
+          "message": "Mapped to Horizon"
+        },
+        {
+          "name": "keyword_map(future)",
+          "passed": true,
+          "message": "Mapped to Horizon"
+        },
+        {
+          "name": "keyword_map(resonance)",
+          "passed": true,
+          "message": "Mapped to Resonance"
+        },
+        {
+          "name": "keyword_map(align)",
+          "passed": true,
+          "message": "Mapped to Resonance"
+        },
+        {
+          "name": "keyword_map(fold)",
+          "passed": true,
+          "message": "Mapped to Folding"
+        },
+        {
+          "name": "keyword_map(compress)",
+          "passed": true,
+          "message": "Mapped to Folding"
+        },
+        {
+          "name": "keyword_map(consensus)",
+          "passed": true,
+          "message": "Mapped to Consensus"
+        },
+        {
+          "name": "keyword_map(agree)",
+          "passed": true,
+          "message": "Mapped to Consensus"
+        },
+        {
+          "name": "keyword_map(overclock)",
+          "passed": true,
+          "message": "Mapped to Overclock"
+        },
+        {
+          "name": "keyword_map(accelerate)",
+          "passed": true,
+          "message": "Mapped to Overclock"
+        },
+        {
+          "name": "keyword_map(deploy)",
+          "passed": true,
+          "message": "Mapped to Deployment"
+        },
+        {
+          "name": "keyword_map(release)",
+          "passed": true,
+          "message": "Mapped to Deployment"
+        },
+        {
+          "name": "keyword_map(checkpoint)",
+          "passed": true,
+          "message": "Mapped to Checkpoint"
+        },
+        {
+          "name": "keyword_map(snapshot)",
+          "passed": true,
+          "message": "Mapped to Checkpoint"
+        },
+        {
+          "name": "keyword_map(synthesis)",
+          "passed": true,
+          "message": "Mapped to Synthesis"
+        },
+        {
+          "name": "keyword_map(merge)",
+          "passed": true,
+          "message": "Mapped to Synthesis"
+        },
+        {
+          "name": "keyword_map(state)",
+          "passed": true,
+          "message": "Mapped to State"
+        },
+        {
+          "name": "keyword_map(context)",
+          "passed": true,
+          "message": "Mapped to State"
+        },
+        {
+          "name": "concept_exists(Flux)",
+          "passed": true,
+          "message": ""
+        },
+        {
+          "name": "concept_exists(Anchor)",
+          "passed": true,
+          "message": ""
+        },
+        {
+          "name": "concept_exists(Drift)",
+          "passed": true,
+          "message": ""
+        },
+        {
+          "name": "concept_exists(Pulse)",
+          "passed": true,
+          "message": ""
+        },
+        {
+          "name": "concept_exists(Mirror)",
+          "passed": true,
+          "message": ""
+        },
+        {
+          "name": "concept_exists(Weave)",
+          "passed": true,
+          "message": ""
+        },
+        {
+          "name": "concept_exists(Relay)",
+          "passed": true,
+          "message": ""
+        },
+        {
+          "name": "concept_exists(Horizon)",
+          "passed": true,
+          "message": ""
+        },
+        {
+          "name": "concept_exists(Resonance)",
+          "passed": true,
+          "message": ""
+        },
+        {
+          "name": "concept_exists(Folding)",
+          "passed": true,
+          "message": ""
+        },
+        {
+          "name": "concept_exists(Consensus)",
+          "passed": true,
+          "message": ""
+        },
+        {
+          "name": "concept_exists(Overclock)",
+          "passed": true,
+          "message": ""
+        },
+        {
+          "name": "concept_exists(Deployment)",
+          "passed": true,
+          "message": ""
+        },
+        {
+          "name": "concept_exists(Checkpoint)",
+          "passed": true,
+          "message": ""
+        },
+        {
+          "name": "concept_exists(Synthesis)",
+          "passed": true,
+          "message": ""
+        },
+        {
+          "name": "concept_exists(State)",
+          "passed": true,
+          "message": ""
+        }
+      ]
+    },
+    "Unit Tests: INTFR-Berechnung": {
+      "passed": 2,
+      "failed": 1,
+      "success_rate": 66.7,
+      "tests": [
+        {
+          "name": "intfr(0.5, 0.5, 0.5)",
+          "passed": false,
+          "message": "Expected 1.25, got 1.2"
+        },
+        {
+          "name": "intfr(1.0, 1.0, 1.0)",
+          "passed": true,
+          "message": "Expected 10.0, got 10.0"
+        },
+        {
+          "name": "intfr(0.0, 0.0, 0.0)",
+          "passed": true,
+          "message": "Expected 0.0, got 0.0"
+        }
+      ]
+    },
+    "Integration Tests: Entropiedichte-Abh\u00e4ngigkeit": {
+      "passed": 9,
+      "failed": 0,
+      "success_rate": 100.0,
+      "tests": [
+        {
+          "name": "entropy_density(5.0%)",
+          "passed": true,
+          "message": "INTFR=0.0"
+        },
+        {
+          "name": "entropy_density(10.0%)",
+          "passed": true,
+          "message": "INTFR=0.1"
+        },
+        {
+          "name": "entropy_density(20.0%)",
+          "passed": true,
+          "message": "INTFR=0.2"
+        },
+        {
+          "name": "entropy_density(50.0%)",
+          "passed": true,
+          "message": "INTFR=0.7"
+        },
+        {
+          "name": "entropy_density(80.0%)",
+          "passed": true,
+          "message": "INTFR=2.4"
+        },
+        {
+          "name": "intfr_monotonic(5.0% -> 10.0%)",
+          "passed": true,
+          "message": "0.0 <= 0.1"
+        },
+        {
+          "name": "intfr_monotonic(10.0% -> 20.0%)",
+          "passed": true,
+          "message": "0.1 <= 0.2"
+        },
+        {
+          "name": "intfr_monotonic(20.0% -> 50.0%)",
+          "passed": true,
+          "message": "0.2 <= 0.7"
+        },
+        {
+          "name": "intfr_monotonic(50.0% -> 80.0%)",
+          "passed": true,
+          "message": "0.7 <= 2.4"
+        }
+      ]
+    },
+    "Integration Tests: Kompressionsverh\u00e4ltnis": {
+      "passed": 2,
+      "failed": 0,
+      "success_rate": 100.0,
+      "tests": [
+        {
+          "name": "compression_ratio(80% entropy)",
+          "passed": true,
+          "message": "Ratio=2.5510204081632653x (expected > 1.5x)"
+        },
+        {
+          "name": "compression_ratio(5% entropy)",
+          "passed": true,
+          "message": "Ratio=1.0060362173038229x (expected < 1.1x)"
+        }
+      ]
+    },
+    "Integration Tests: Edge Cases": {
+      "passed": 5,
+      "failed": 0,
+      "success_rate": 100.0,
+      "tests": [
+        {
+          "name": "edge_case(empty_text)",
+          "passed": true,
+          "message": "Processed successfully"
+        },
+        {
+          "name": "edge_case(single_keyword)",
+          "passed": true,
+          "message": "Processed successfully"
+        },
+        {
+          "name": "edge_case(repeated_keyword)",
+          "passed": true,
+          "message": "Processed successfully"
+        },
+        {
+          "name": "edge_case(repeated_filler)",
+          "passed": true,
+          "message": "Processed successfully"
+        },
+        {
+          "name": "edge_case(all_keywords)",
+          "passed": true,
+          "message": "Processed successfully"
+        }
+      ]
+    },
+    "Performance Tests": {
+      "passed": 4,
+      "failed": 0,
+      "success_rate": 100.0,
+      "tests": [
+        {
+          "name": "performance(100 words)",
+          "passed": true,
+          "message": "Duration: 0.18ms"
+        },
+        {
+          "name": "performance(500 words)",
+          "passed": true,
+          "message": "Duration: 0.96ms"
+        },
+        {
+          "name": "performance(1000 words)",
+          "passed": true,
+          "message": "Duration: 1.71ms"
+        },
+        {
+          "name": "performance(5000 words)",
+          "passed": true,
+          "message": "Duration: 8.73ms"
+        }
+      ]
+    },
+    "Consistency Tests": {
+      "passed": 2,
+      "failed": 0,
+      "success_rate": 100.0,
+      "tests": [
+        {
+          "name": "consistency_run_1",
+          "passed": true,
+          "message": "Result matches first run"
+        },
+        {
+          "name": "consistency_run_2",
+          "passed": true,
+          "message": "Result matches first run"
+        }
+      ]
+    }
+  }
+}
