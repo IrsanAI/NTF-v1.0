@@ -10,6 +10,9 @@
 - [x] Erste Metriken integriert: RDF/SCS/SSR (baseline)
 - [x] Regression-Set mit Mischinputs angelegt (`eval/datasets/multimodal_regression.jsonl`)
 - [x] Benchmark-Runner für Multimodal-Pipeline hinzugefügt (`ntf_multimodal_benchmark.py`)
+- [x] docs/ + README um Pipeline v0.3 und Metriken ergänzt
+- [x] Benchmark-Ergebnisse versioniert in `eval/results/` persistierbar gemacht
+- [x] CI-Job für Multimodal-Benchmark + Roundtrip-Tests angelegt
 
 ## In Progress
 - [ ] Realistische RDF-Variante mit stärkerer Semantikkomponente (Embedding/Model-based)
@@ -17,9 +20,9 @@
 - [ ] SSR erweitern (kontextsensitives Risk-Scoring statt Regex/Marker-only)
 
 ## Next (highest priority)
-- [ ] docs/ + README um Pipeline v0.3 und Metriken im Detail ergänzen
-- [ ] Benchmark-Ergebnisse versioniert in `eval/` persistieren
-- [ ] CI-Job für Multimodal-Benchmark + Roundtrip-Tests
+- [ ] Dashboard/Docs: automatische Anzeige der neuesten `eval/results/multimodal_latest.json`
+- [ ] Additional datasets für finance/medical/legal/code-heavy
+- [ ] CI-Threshold Gates (fail if avg_rdf/avg_scs unter Schwellwert)
 
 ## Later
 - [ ] MindMaster Connector produktivisieren (official export adapters)

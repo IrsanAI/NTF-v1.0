@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
+import json
 from pathlib import Path
 
-from ntf_multimodal_benchmark import load_jsonl, run_benchmark
+from ntf_multimodal_benchmark import load_jsonl, persist_results, run_benchmark
 
 
 def test_load_jsonl_dataset():
@@ -17,4 +18,14 @@ def test_run_benchmark_summary_and_results():
     assert "avg_rdf" in out["summary"]
     assert "avg_scs" in out["summary"]
     assert "avg_ssr" in out["summary"]
+    assert "generated_at" in out["summary"]
     assert all("risk_level" in r for r in out["results"])
+
+
+def test_persist_results(tmp_path):
+    out = run_benchmark(Path("eval/datasets/multimodal_regression.jsonl"))
+    target = tmp_path / "results" / "multi.json"
+    persist_results(out, target)
+    assert target.exists()
+    loaded = json.loads(target.read_text(encoding="utf-8"))
+    assert loaded["summary"]["cases"] == out["summary"]["cases"]

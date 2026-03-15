@@ -20,6 +20,15 @@ Die GitHub Page wurde zu einer modernen, interaktiven **FluxLab-Erfahrung** migr
   - Manus-Baseline enthalten.
   - Lokale, DSGVO-freundliche Run-Protokollierung via Browser-Storage.
 
+## Multimodal Pipeline & Benchmarking (Repo-Ebene)
+
+- `ntf_multimodal_pipeline.py` (v0.3) liefert baseline Scores für:
+  - RDF (Roundtrip-Fidelity)
+  - SCS (Structural-Consistency)
+  - SSR (Security-Robustness)
+- `ntf_multimodal_benchmark.py` führt Dataset-Benchmarks aus und kann Reports in `eval/results/` persistieren.
+- CI-Workflow `.github/workflows/multimodal-ci.yml` prüft Multimodal-Tests + Benchmark bei Push/PR.
+
 ## Wichtige Architektur-Notiz (GitHub Pages)
 
 GitHub Pages ist statisch. Deshalb werden keine Rohdaten serverseitig gespeichert.

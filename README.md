@@ -125,7 +125,7 @@ Command:
 python3 ntf_standard.py --benchmark
 python3 ntf_realtime_eval.py --response-files responses/chatgpt_normal.txt
 python3 ntf_multimodal_pipeline.py --input "flux anchor\n\n```python\nprint(1)\n```" --json
-python3 ntf_multimodal_benchmark.py --dataset eval/datasets/multimodal_regression.jsonl --json
+python3 ntf_multimodal_benchmark.py --dataset eval/datasets/multimodal_regression.jsonl --output eval/results/multimodal_latest.json --json
 ```
 
 Result set (4,500-word synthetic high-entropy agent stream):
@@ -170,6 +170,16 @@ Notes:
 - Phase-1 scope is intentionally narrow (single provider first).
 - Keep `MM_PROVIDER_ALLOWLIST=grok` until audit and drift checks are stable.
 
+
+### Multimodal pipeline (v0.3)
+
+`ntf_multimodal_pipeline.py` now provides baseline mixed-content quality/safety scoring:
+- **RDF**: blended roundtrip fidelity (token recall + jaccard + char similarity)
+- **SCS**: structural consistency with AST-aware validation for Python blocks
+- **SSR**: weighted risk score from injection markers + sensitive-pattern detection
+
+`ntf_multimodal_benchmark.py` runs dataset-wide evaluation and can persist reports to `eval/results/`.
+
 ## 6. Quick Start
 
 ```bash
@@ -177,7 +187,7 @@ python3 ntf_standard.py --text "Agent state relay anchor drift pulse mirror cons
 python3 ntf_standard.py --benchmark
 python3 ntf_realtime_eval.py --response-files responses/chatgpt_normal.txt
 python3 ntf_multimodal_pipeline.py --input "flux anchor\n\n```python\nprint(1)\n```" --json
-python3 ntf_multimodal_benchmark.py --dataset eval/datasets/multimodal_regression.jsonl --json
+python3 ntf_multimodal_benchmark.py --dataset eval/datasets/multimodal_regression.jsonl --output eval/results/multimodal_latest.json --json
 ```
 
 ---

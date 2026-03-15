@@ -111,6 +111,9 @@ Bereits umgesetzt als v0.3-Basis:
 - Regression + Benchmarking:
   - `eval/datasets/multimodal_regression.jsonl`
   - `ntf_multimodal_benchmark.py`
+  - persistierbare Reports in `eval/results/`
+- CI-Absicherung:
+  - `.github/workflows/multimodal-ci.yml` (Tests + Benchmark Artifact)
 
 Nächste Iteration:
 - RDF von lexical + sequence blend auf stärkere semantische Metrik (Embedding/Model-based) erweitern.
