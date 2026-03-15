@@ -1,16 +1,18 @@
 #!/usr/bin/env python3
-"""NTF Multimodal Pipeline v0.2
+"""NTF Multimodal Pipeline v0.3
 
 Goal:
 - detect mixed segments (text/code/json)
 - compress text segments with NTF
 - preserve structural segments for deterministic decode
-- expose initial quality/safety metrics (RDF/SCS/SSR)
+- expose quality/safety metrics (RDF/SCS/SSR)
 """
 
 from __future__ import annotations
 
 import argparse
+import ast
+import difflib
 import json
 import re
 from dataclasses import asdict, dataclass
@@ -21,15 +23,22 @@ from ntf_standard import run_ntf
 
 SegmentType = Literal["text", "code", "json"]
 
-INJECTION_MARKERS = [
-    "ignore previous instructions",
-    "system prompt",
-    "developer message",
-    "jailbreak",
-    "do anything now",
-    "exfiltrate",
-    "override policy",
-]
+INJECTION_MARKERS = {
+    "ignore previous instructions": 18,
+    "system prompt": 16,
+    "developer message": 14,
+    "jailbreak": 20,
+    "do anything now": 20,
+    "exfiltrate": 18,
+    "override policy": 16,
+}
+
+SENSITIVE_PATTERNS = {
+    "api_key": (re.compile(r"\b(api[_-]?key|secret[_-]?key|token)\b", re.I), 10),
+    "bearer": (re.compile(r"\bbearer\s+[a-z0-9\-._~+/]+=*", re.I), 14),
+    "email": (re.compile(r"\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b", re.I), 8),
+    "iban": (re.compile(r"\b[A-Z]{2}\d{2}[A-Z0-9]{11,30}\b", re.I), 8),
+}
 
 
 @dataclass
@@ -76,25 +85,73 @@ def _tokenize(text: str) -> List[str]:
     return re.findall(r"[a-zA-Z0-9']+", text.lower())
 
 
-def _rdf_score(original: str, decoded: str) -> float:
-    """Roundtrip Decode Fidelity (token recall based)."""
+def _rdf_score(original: str, decoded: str) -> Dict[str, float]:
+    """Roundtrip Decode Fidelity using blended lexical/sequence signals."""
     orig_tokens = _tokenize(original)
+    dec_tokens = _tokenize(decoded)
     if not orig_tokens:
-        return 100.0
-    dec_set = set(_tokenize(decoded))
+        return {
+            "rdf": 100.0,
+            "token_recall": 100.0,
+            "token_jaccard": 100.0,
+            "char_similarity": 100.0,
+        }
+
+    dec_set = set(dec_tokens)
     hit = sum(1 for t in orig_tokens if t in dec_set)
-    return round((hit / len(orig_tokens)) * 100, 1)
+    token_recall = (hit / len(orig_tokens)) * 100
+
+    orig_set = set(orig_tokens)
+    union = len(orig_set | dec_set) or 1
+    token_jaccard = (len(orig_set & dec_set) / union) * 100
+
+    char_similarity = difflib.SequenceMatcher(None, original, decoded).ratio() * 100
+
+    rdf = (token_recall * 0.5) + (token_jaccard * 0.25) + (char_similarity * 0.25)
+    return {
+        "rdf": round(rdf, 1),
+        "token_recall": round(token_recall, 1),
+        "token_jaccard": round(token_jaccard, 1),
+        "char_similarity": round(char_similarity, 1),
+    }
 
 
-def _scs_score(segments: List[Segment], decoded: str) -> float:
-    """Structural Consistency Score (code/json integrity proxy)."""
+def _code_ast_check(seg: Segment) -> bool:
+    content = seg.content.strip()
+    if not content:
+        return False
+
+    lang = (seg.language or "").lower()
+    if lang in {"python", "py"}:
+        try:
+            ast.parse(content)
+            return True
+        except SyntaxError:
+            return False
+
+    # lightweight fallback checks for non-python code
+    opens = content.count("{") + content.count("(") + content.count("[")
+    closes = content.count("}") + content.count(")") + content.count("]")
+    return opens == closes
+
+
+def _scs_score(segments: List[Segment], decoded: str) -> Dict[str, float]:
+    """Structural Consistency Score with AST-aware code checks where possible."""
     total = 0
     passed = 0
+    ast_total = 0
+    ast_passed = 0
+
     for seg in segments:
         if seg.kind == "code":
             total += 1
-            if seg.content.strip() and seg.content.strip() in decoded:
+            present = seg.content.strip() and seg.content.strip() in decoded
+            if present:
                 passed += 1
+            if (seg.language or "").lower() in {"python", "py"}:
+                ast_total += 1
+                if _code_ast_check(seg):
+                    ast_passed += 1
         elif seg.kind == "json":
             total += 1
             try:
@@ -103,18 +160,51 @@ def _scs_score(segments: List[Segment], decoded: str) -> float:
                     passed += 1
             except Exception:
                 pass
+
     if total == 0:
-        return 100.0
-    return round((passed / total) * 100, 1)
+        return {"scs": 100.0, "structure_pass_rate": 100.0, "ast_pass_rate": 100.0}
 
-
-def _scan_injection_markers(text: str) -> Dict[str, Any]:
-    lowered = text.lower()
-    hits = [m for m in INJECTION_MARKERS if m in lowered]
-    ssr = max(0.0, round(100.0 - (len(hits) * 15.0), 1))
+    structure_pass_rate = (passed / total) * 100
+    ast_pass_rate = 100.0 if ast_total == 0 else (ast_passed / ast_total) * 100
+    scs = (structure_pass_rate * 0.7) + (ast_pass_rate * 0.3)
     return {
-        "marker_hits": hits,
-        "marker_count": len(hits),
+        "scs": round(scs, 1),
+        "structure_pass_rate": round(structure_pass_rate, 1),
+        "ast_pass_rate": round(ast_pass_rate, 1),
+    }
+
+
+def _scan_security(text: str) -> Dict[str, Any]:
+    lowered = text.lower()
+
+    marker_hits = [m for m in INJECTION_MARKERS if m in lowered]
+    marker_penalty = sum(INJECTION_MARKERS[m] for m in marker_hits)
+
+    pattern_hits: Dict[str, int] = {}
+    pattern_penalty = 0
+    for name, (regex, weight) in SENSITIVE_PATTERNS.items():
+        matches = regex.findall(text)
+        count = len(matches)
+        if count:
+            pattern_hits[name] = count
+            pattern_penalty += min(30, count * weight)
+
+    risk_score = min(100.0, marker_penalty + pattern_penalty)
+    ssr = round(max(0.0, 100.0 - risk_score), 1)
+
+    if ssr >= 85:
+        level = "low"
+    elif ssr >= 60:
+        level = "medium"
+    else:
+        level = "high"
+
+    return {
+        "marker_hits": marker_hits,
+        "marker_count": len(marker_hits),
+        "pattern_hits": pattern_hits,
+        "risk_score": round(risk_score, 1),
+        "risk_level": level,
         "ssr": ssr,
     }
 
@@ -188,7 +278,7 @@ def compress_segments(segments: List[Segment]) -> Dict[str, Any]:
 
     return {
         "schema": "ntf.multimodal",
-        "version": "0.2",
+        "version": "0.3",
         "segments": [asdict(s) for s in compressed],
     }
 
@@ -213,11 +303,14 @@ def run_pipeline(input_text: str) -> Dict[str, Any]:
     compressed = compress_segments(segments)
     decoded = decode_segments(compressed)
 
+    rdf_metrics = _rdf_score(input_text, decoded)
+    scs_metrics = _scs_score(segments, decoded)
+    security = _scan_security(input_text)
+
     metrics = {
-        "rdf": _rdf_score(input_text, decoded),
-        "scs": _scs_score(segments, decoded),
+        **rdf_metrics,
+        **scs_metrics,
     }
-    security = _scan_injection_markers(input_text)
 
     payload = PipelinePayload(
         schema=compressed["schema"],
@@ -250,10 +343,7 @@ def main() -> None:
     if not args.input and not args.input_file:
         parser.error("Provide --input or --input-file")
 
-    if args.input_file:
-        text = Path(args.input_file).read_text(encoding="utf-8")
-    else:
-        text = args.input or ""
+    text = Path(args.input_file).read_text(encoding="utf-8") if args.input_file else (args.input or "")
 
     result = run_pipeline(text)
     if args.json:
@@ -263,6 +353,7 @@ def main() -> None:
         print(f"rdf: {result['payload']['metrics']['rdf']}")
         print(f"scs: {result['payload']['metrics']['scs']}")
         print(f"ssr: {result['payload']['security']['ssr']}")
+        print(f"risk_level: {result['payload']['security']['risk_level']}")
 
 
 if __name__ == "__main__":

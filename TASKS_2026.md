@@ -5,19 +5,21 @@
 - [x] GitHub Page modernisiert (FluxLab + DSGVO Workflow + Validator)
 - [x] Lizenz ergänzt (`LICENSE`)
 - [x] Test-Suite stabilisiert (`test_ntf_comprehensive.py` INTFR expectation)
-- [x] Multimodal Pipeline v0.1 in Codebasis verankert (`ntf_multimodal_pipeline.py`)
+- [x] Multimodal Pipeline in Codebasis verankert (`ntf_multimodal_pipeline.py`)
 - [x] `ntf_multimodal_pipeline.py` CLI + JSON export ergänzt
 - [x] Erste Metriken integriert: RDF/SCS/SSR (baseline)
+- [x] Regression-Set mit Mischinputs angelegt (`eval/datasets/multimodal_regression.jsonl`)
+- [x] Benchmark-Runner für Multimodal-Pipeline hinzugefügt (`ntf_multimodal_benchmark.py`)
 
 ## In Progress
-- [ ] Realistische RDF-Variante mit Edit-Distance + Semantic similarity
-- [ ] SCS erweitern (AST-aware checks für Code)
-- [ ] SSR erweitern (kontextsensitives Risk-Scoring statt Marker-only)
+- [ ] Realistische RDF-Variante mit stärkerer Semantikkomponente (Embedding/Model-based)
+- [ ] SCS erweitern (AST-aware checks über Python hinaus)
+- [ ] SSR erweitern (kontextsensitives Risk-Scoring statt Regex/Marker-only)
 
 ## Next (highest priority)
-- [ ] Regression-Set mit realen Mischinputs aufbauen
-- [ ] Benchmark-Runner für Multimodal-Pipeline hinzufügen
-- [ ] docs/ + README um Pipeline v0.2 und Metriken ergänzen
+- [ ] docs/ + README um Pipeline v0.3 und Metriken im Detail ergänzen
+- [ ] Benchmark-Ergebnisse versioniert in `eval/` persistieren
+- [ ] CI-Job für Multimodal-Benchmark + Roundtrip-Tests
 
 ## Later
 - [ ] MindMaster Connector produktivisieren (official export adapters)

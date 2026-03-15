@@ -98,7 +98,7 @@ Strategischer Intent: **von einer prototypischen Kompressionsmethode zu einer be
 
 ## 5) Aktueller nächster Schritt (fortgeführt)
 
-Bereits umgesetzt als v0.2-Basis:
+Bereits umgesetzt als v0.3-Basis:
 - `ntf_multimodal_pipeline.py`
   - `detect_segments(input_text)`
   - `compress_segments(segments)`
@@ -108,11 +108,14 @@ Bereits umgesetzt als v0.2-Basis:
   - Codeblock-Strukturerhalt
   - JSON-Kanonisierung
   - Determinismus
+- Regression + Benchmarking:
+  - `eval/datasets/multimodal_regression.jsonl`
+  - `ntf_multimodal_benchmark.py`
 
 Nächste Iteration:
-- RDF von Token-Recall auf robustere Edit-/Semantic-Metrik erweitern.
-- SCS AST-aware für Code vertiefen.
-- SSR über Marker-basierte Checks hinaus auf kontextsensitives Risk-Scoring erweitern.
+- RDF von lexical + sequence blend auf stärkere semantische Metrik (Embedding/Model-based) erweitern.
+- SCS AST-aware auf weitere Sprachen ausbauen.
+- SSR auf kontextsensitives Risk-Scoring mit weniger Regex-Approximation vertiefen.
 
 ---
 

@@ -125,6 +125,7 @@ Command:
 python3 ntf_standard.py --benchmark
 python3 ntf_realtime_eval.py --response-files responses/chatgpt_normal.txt
 python3 ntf_multimodal_pipeline.py --input "flux anchor\n\n```python\nprint(1)\n```" --json
+python3 ntf_multimodal_benchmark.py --dataset eval/datasets/multimodal_regression.jsonl --json
 ```
 
 Result set (4,500-word synthetic high-entropy agent stream):
@@ -176,6 +177,7 @@ python3 ntf_standard.py --text "Agent state relay anchor drift pulse mirror cons
 python3 ntf_standard.py --benchmark
 python3 ntf_realtime_eval.py --response-files responses/chatgpt_normal.txt
 python3 ntf_multimodal_pipeline.py --input "flux anchor\n\n```python\nprint(1)\n```" --json
+python3 ntf_multimodal_benchmark.py --dataset eval/datasets/multimodal_regression.jsonl --json
 ```
 
 ---
