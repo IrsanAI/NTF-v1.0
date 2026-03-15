@@ -124,6 +124,7 @@ Command:
 ```bash
 python3 ntf_standard.py --benchmark
 python3 ntf_realtime_eval.py --response-files responses/chatgpt_normal.txt
+python3 ntf_multimodal_pipeline.py --input "flux anchor\n\n```python\nprint(1)\n```" --json
 ```
 
 Result set (4,500-word synthetic high-entropy agent stream):
@@ -174,6 +175,7 @@ Notes:
 python3 ntf_standard.py --text "Agent state relay anchor drift pulse mirror consensus"
 python3 ntf_standard.py --benchmark
 python3 ntf_realtime_eval.py --response-files responses/chatgpt_normal.txt
+python3 ntf_multimodal_pipeline.py --input "flux anchor\n\n```python\nprint(1)\n```" --json
 ```
 
 ---

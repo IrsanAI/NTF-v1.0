@@ -96,9 +96,9 @@ Strategischer Intent: **von einer prototypischen Kompressionsmethode zu einer be
 
 ---
 
-## 5) Aktueller nächster Schritt (läuft bereits)
+## 5) Aktueller nächster Schritt (fortgeführt)
 
-Bereits umgesetzt als v0.1-Basis:
+Bereits umgesetzt als v0.2-Basis:
 - `ntf_multimodal_pipeline.py`
   - `detect_segments(input_text)`
   - `compress_segments(segments)`
@@ -110,9 +110,9 @@ Bereits umgesetzt als v0.1-Basis:
   - Determinismus
 
 Nächste Iteration:
-- RDF-Metrik im Payload ausweisen.
-- SCS/SSR als zusätzliche Scores integrieren.
-- CLI (`--input`, `--json`) für reproduzierbare Pipeline-Runs ergänzen.
+- RDF von Token-Recall auf robustere Edit-/Semantic-Metrik erweitern.
+- SCS AST-aware für Code vertiefen.
+- SSR über Marker-basierte Checks hinaus auf kontextsensitives Risk-Scoring erweitern.
 
 ---
 
