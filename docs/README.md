@@ -28,6 +28,7 @@ Die GitHub Page wurde zu einer modernen, interaktiven **FluxLab-Erfahrung** migr
   - SSR (Security-Robustness)
 - `ntf_multimodal_benchmark.py` führt Dataset-Benchmarks aus und kann Reports in `eval/results/` persistieren.
 - CI-Workflow `.github/workflows/multimodal-ci.yml` prüft Multimodal-Tests + Benchmark bei Push/PR.
+- Neuester Benchmark-Snapshot wird als `docs/benchmarking/multimodal_latest.json` bereitgestellt und kann in der Page automatisch geladen werden.
 
 ## Wichtige Architektur-Notiz (GitHub Pages)
 

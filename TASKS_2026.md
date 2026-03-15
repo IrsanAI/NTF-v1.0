@@ -13,6 +13,9 @@
 - [x] docs/ + README um Pipeline v0.3 und Metriken ergänzt
 - [x] Benchmark-Ergebnisse versioniert in `eval/results/` persistierbar gemacht
 - [x] CI-Job für Multimodal-Benchmark + Roundtrip-Tests angelegt
+- [x] Dashboard/Docs: automatische Anzeige der neuesten `docs/benchmarking/multimodal_latest.json`
+- [x] Additional datasets für finance/medical/legal/code-heavy ergänzt
+- [x] CI-Threshold Gates (avg RDF/SCS/SSR Mindestwerte) aktiviert
 
 ## In Progress
 - [ ] Realistische RDF-Variante mit stärkerer Semantikkomponente (Embedding/Model-based)
@@ -20,9 +23,9 @@
 - [ ] SSR erweitern (kontextsensitives Risk-Scoring statt Regex/Marker-only)
 
 ## Next (highest priority)
-- [ ] Dashboard/Docs: automatische Anzeige der neuesten `eval/results/multimodal_latest.json`
-- [ ] Additional datasets für finance/medical/legal/code-heavy
-- [ ] CI-Threshold Gates (fail if avg_rdf/avg_scs unter Schwellwert)
+- [ ] Zeitreihen-Dashboard für Benchmark-Drift (mehrere Reports statt latest-only)
+- [ ] Dataset-Coverage auf >100 Cases ausbauen
+- [ ] CI-Matrix für mehrere Python-Versionen + strengere Quality-Gates
 
 ## Later
 - [ ] MindMaster Connector produktivisieren (official export adapters)

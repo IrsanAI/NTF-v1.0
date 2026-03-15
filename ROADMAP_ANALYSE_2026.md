@@ -113,7 +113,11 @@ Bereits umgesetzt als v0.3-Basis:
   - `ntf_multimodal_benchmark.py`
   - persistierbare Reports in `eval/results/`
 - CI-Absicherung:
-  - `.github/workflows/multimodal-ci.yml` (Tests + Benchmark Artifact)
+  - `.github/workflows/multimodal-ci.yml` (Tests + Benchmark Artifact + Threshold Gates)
+- Dataset-Ausbau:
+  - zusätzliche Domänen-Datasets (`finance`, `medical`, `legal`, `code-heavy`)
+- Dashboard-Readiness:
+  - latest Snapshot für Site-Load unter `docs/benchmarking/multimodal_latest.json`
 
 Nächste Iteration:
 - RDF von lexical + sequence blend auf stärkere semantische Metrik (Embedding/Model-based) erweitern.

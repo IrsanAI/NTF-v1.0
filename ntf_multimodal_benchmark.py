@@ -59,6 +59,18 @@ def persist_results(report: Dict[str, object], out_path: Path) -> None:
     out_path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
+def check_thresholds(report: Dict[str, object], min_rdf: float, min_scs: float, min_ssr: float) -> Dict[str, object]:
+    summary = report["summary"]
+    return {
+        "pass_rdf": float(summary["avg_rdf"]) >= min_rdf,
+        "pass_scs": float(summary["avg_scs"]) >= min_scs,
+        "pass_ssr": float(summary["avg_ssr"]) >= min_ssr,
+        "min_rdf": min_rdf,
+        "min_scs": min_scs,
+        "min_ssr": min_ssr,
+    }
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Run multimodal benchmark")
     parser.add_argument(
@@ -72,15 +84,29 @@ def main() -> None:
         default="",
         help="Optional output JSON file path (e.g. eval/results/multimodal_latest.json)",
     )
+    parser.add_argument(
+        "--docs-output",
+        default="",
+        help="Optional docs output path (e.g. docs/benchmarking/multimodal_latest.json)",
+    )
+    parser.add_argument("--min-rdf", type=float, default=0.0, help="Minimum avg RDF threshold")
+    parser.add_argument("--min-scs", type=float, default=0.0, help="Minimum avg SCS threshold")
+    parser.add_argument("--min-ssr", type=float, default=0.0, help="Minimum avg SSR threshold")
+    parser.add_argument("--enforce-thresholds", action="store_true", help="Exit non-zero if thresholds fail")
     args = parser.parse_args()
 
     data = run_benchmark(Path(args.dataset))
 
     if args.output:
         persist_results(data, Path(args.output))
+    if args.docs_output:
+        persist_results(data, Path(args.docs_output))
+
+    threshold_status = check_thresholds(data, args.min_rdf, args.min_scs, args.min_ssr)
 
     if args.json:
-        print(json.dumps(data, ensure_ascii=False, indent=2))
+        payload = {**data, "thresholds": threshold_status}
+        print(json.dumps(payload, ensure_ascii=False, indent=2))
     else:
         print("cases:", data["summary"]["cases"])
         print("avg_rdf:", data["summary"]["avg_rdf"])
@@ -88,6 +114,14 @@ def main() -> None:
         print("avg_ssr:", data["summary"]["avg_ssr"])
         if args.output:
             print("output:", args.output)
+        if args.docs_output:
+            print("docs_output:", args.docs_output)
+        print("thresholds:", threshold_status)
+
+    if args.enforce_thresholds and not all(
+        [threshold_status["pass_rdf"], threshold_status["pass_scs"], threshold_status["pass_ssr"]]
+    ):
+        raise SystemExit(2)
 
 
 if __name__ == "__main__":

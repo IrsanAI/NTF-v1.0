@@ -3,7 +3,7 @@
 import json
 from pathlib import Path
 
-from ntf_multimodal_benchmark import load_jsonl, persist_results, run_benchmark
+from ntf_multimodal_benchmark import check_thresholds, load_jsonl, persist_results, run_benchmark
 
 
 def test_load_jsonl_dataset():
@@ -29,3 +29,11 @@ def test_persist_results(tmp_path):
     assert target.exists()
     loaded = json.loads(target.read_text(encoding="utf-8"))
     assert loaded["summary"]["cases"] == out["summary"]["cases"]
+
+
+def test_threshold_checks_return_flags():
+    out = run_benchmark(Path("eval/datasets/multimodal_regression.jsonl"))
+    flags = check_thresholds(out, min_rdf=90, min_scs=90, min_ssr=40)
+    assert flags["pass_rdf"] is True
+    assert flags["pass_scs"] is True
+    assert flags["pass_ssr"] is True

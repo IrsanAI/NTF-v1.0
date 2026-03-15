@@ -251,6 +251,15 @@
           </div>
           <div id="agentTableWrap" class="table-wrap"></div>
         </div>
+        <div class="step">
+          <div class="row" style="justify-content: space-between;">
+            <strong>Latest Multimodal Benchmark Snapshot</strong>
+            <span class="pill">auto-loaded</span>
+          </div>
+          <div id="latestBenchSnapshot" class="table-wrap">
+            <p style="color:#9cb0d5;">Lade neuesten Snapshot...</p>
+          </div>
+        </div>
 
         <div class="step">
           <strong>Stille-Post Validator</strong>
@@ -485,6 +494,37 @@
       `;
     }
 
+    function loadLatestBenchmarkSnapshot() {
+      const target = document.getElementById("latestBenchSnapshot");
+      fetch("./benchmarking/multimodal_latest.json", { cache: "no-store" })
+        .then(r => {
+          if (!r.ok) throw new Error("snapshot not found");
+          return r.json();
+        })
+        .then(data => {
+          const s = data.summary || {};
+          target.innerHTML = `
+            <table>
+              <thead>
+                <tr><th>Cases</th><th>avg RDF</th><th>avg SCS</th><th>avg SSR</th><th>Generated</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>${s.cases ?? "-"}</td>
+                  <td>${s.avg_rdf ?? "-"}</td>
+                  <td>${s.avg_scs ?? "-"}</td>
+                  <td>${s.avg_ssr ?? "-"}</td>
+                  <td>${s.generated_at ?? "-"}</td>
+                </tr>
+              </tbody>
+            </table>
+          `;
+        })
+        .catch(() => {
+          target.innerHTML = '<p style="color:#ffe7ab;">Noch kein veröffentlichter Snapshot gefunden. Führe `ntf_multimodal_benchmark.py --docs-output docs/benchmarking/multimodal_latest.json` aus.</p>';
+        });
+    }
+
     function refreshBenchUI() {
       renderTable("humanTableWrap", state.humanRuns, true);
       renderTable("agentTableWrap", state.agentRuns, false);
@@ -603,6 +643,7 @@
 
     renderFindings();
     refreshBenchUI();
+    loadLatestBenchmarkSnapshot();
   </script>
 </body>
 </html>
