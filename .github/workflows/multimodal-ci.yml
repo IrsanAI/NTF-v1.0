@@ -8,6 +8,10 @@ on:
 jobs:
   test-and-benchmark:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11"]
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -15,7 +19,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: ${{ matrix.python-version }}
 
       - name: Install test deps
         run: |
@@ -36,9 +40,10 @@ jobs:
             --dataset eval/datasets/multimodal_regression.jsonl \
             --output eval/results/multimodal_latest.json \
             --docs-output docs/benchmarking/multimodal_latest.json \
-            --min-rdf 95 \
-            --min-scs 95 \
-            --min-ssr 50 \
+            --history-file docs/benchmarking/multimodal_history.json \
+            --min-rdf 97 \
+            --min-scs 97 \
+            --min-ssr 70 \
             --enforce-thresholds \
             --json
 
@@ -48,11 +53,13 @@ jobs:
           python ntf_multimodal_benchmark.py --dataset eval/datasets/multimodal_medical.jsonl --json
           python ntf_multimodal_benchmark.py --dataset eval/datasets/multimodal_legal.jsonl --json
           python ntf_multimodal_benchmark.py --dataset eval/datasets/multimodal_code_heavy.jsonl --json
+          python ntf_multimodal_benchmark.py --dataset eval/datasets/multimodal_expanded_120.jsonl --json
 
       - name: Upload benchmark artifact
         uses: actions/upload-artifact@v4
         with:
-          name: multimodal-benchmark
+          name: multimodal-benchmark-py${{ matrix.python-version }}
           path: |
             eval/results/multimodal_latest.json
             docs/benchmarking/multimodal_latest.json
+            docs/benchmarking/multimodal_history.json

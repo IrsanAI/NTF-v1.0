@@ -16,6 +16,9 @@
 - [x] Dashboard/Docs: automatische Anzeige der neuesten `docs/benchmarking/multimodal_latest.json`
 - [x] Additional datasets für finance/medical/legal/code-heavy ergänzt
 - [x] CI-Threshold Gates (avg RDF/SCS/SSR Mindestwerte) aktiviert
+- [x] Zeitreihen-Dashboard-Basis (History JSON + UI Anzeige der letzten Runs)
+- [x] Dataset-Coverage auf >100 Cases erweitert (`multimodal_expanded_120.jsonl`)
+- [x] CI-Matrix für mehrere Python-Versionen aktiviert
 
 ## In Progress
 - [ ] Realistische RDF-Variante mit stärkerer Semantikkomponente (Embedding/Model-based)
@@ -23,9 +26,9 @@
 - [ ] SSR erweitern (kontextsensitives Risk-Scoring statt Regex/Marker-only)
 
 ## Next (highest priority)
-- [ ] Zeitreihen-Dashboard für Benchmark-Drift (mehrere Reports statt latest-only)
-- [ ] Dataset-Coverage auf >100 Cases ausbauen
-- [ ] CI-Matrix für mehrere Python-Versionen + strengere Quality-Gates
+- [ ] Drift-Analyse: automatische Delta-Berechnung zwischen History-Runs
+- [ ] Dataset-Coverage auf >500 Cases ausbauen
+- [ ] CI Quality Gates um Per-Case Floor-Werte ergänzen (nicht nur Durchschnitt)
 
 ## Later
 - [ ] MindMaster Connector produktivisieren (official export adapters)

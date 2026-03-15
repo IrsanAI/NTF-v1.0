@@ -59,6 +59,29 @@ def persist_results(report: Dict[str, object], out_path: Path) -> None:
     out_path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
+
+
+def append_history_entry(report: Dict[str, object], history_path: Path) -> Dict[str, object]:
+    history_path.parent.mkdir(parents=True, exist_ok=True)
+    if history_path.exists():
+        history = json.loads(history_path.read_text(encoding="utf-8"))
+    else:
+        history = {"runs": []}
+
+    summary = report.get("summary", {})
+    entry = {
+        "generated_at": summary.get("generated_at"),
+        "dataset": summary.get("dataset"),
+        "cases": summary.get("cases"),
+        "avg_rdf": summary.get("avg_rdf"),
+        "avg_scs": summary.get("avg_scs"),
+        "avg_ssr": summary.get("avg_ssr"),
+    }
+    history.setdefault("runs", []).append(entry)
+    history["runs"] = history["runs"][-50:]
+    history_path.write_text(json.dumps(history, ensure_ascii=False, indent=2), encoding="utf-8")
+    return history
+
 def check_thresholds(report: Dict[str, object], min_rdf: float, min_scs: float, min_ssr: float) -> Dict[str, object]:
     summary = report["summary"]
     return {
@@ -93,6 +116,7 @@ def main() -> None:
     parser.add_argument("--min-scs", type=float, default=0.0, help="Minimum avg SCS threshold")
     parser.add_argument("--min-ssr", type=float, default=0.0, help="Minimum avg SSR threshold")
     parser.add_argument("--enforce-thresholds", action="store_true", help="Exit non-zero if thresholds fail")
+    parser.add_argument("--history-file", default="", help="Optional history JSON path to append summarized run")
     args = parser.parse_args()
 
     data = run_benchmark(Path(args.dataset))
@@ -104,8 +128,14 @@ def main() -> None:
 
     threshold_status = check_thresholds(data, args.min_rdf, args.min_scs, args.min_ssr)
 
+    history_payload = None
+    if args.history_file:
+        history_payload = append_history_entry(data, Path(args.history_file))
+
     if args.json:
         payload = {**data, "thresholds": threshold_status}
+        if history_payload is not None:
+            payload["history"] = history_payload
         print(json.dumps(payload, ensure_ascii=False, indent=2))
     else:
         print("cases:", data["summary"]["cases"])
@@ -116,6 +146,8 @@ def main() -> None:
             print("output:", args.output)
         if args.docs_output:
             print("docs_output:", args.docs_output)
+        if args.history_file:
+            print("history_file:", args.history_file)
         print("thresholds:", threshold_status)
 
     if args.enforce_thresholds and not all(

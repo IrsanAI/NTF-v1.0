@@ -125,7 +125,7 @@ Command:
 python3 ntf_standard.py --benchmark
 python3 ntf_realtime_eval.py --response-files responses/chatgpt_normal.txt
 python3 ntf_multimodal_pipeline.py --input "flux anchor\n\n```python\nprint(1)\n```" --json
-python3 ntf_multimodal_benchmark.py --dataset eval/datasets/multimodal_regression.jsonl --output eval/results/multimodal_latest.json --docs-output docs/benchmarking/multimodal_latest.json --min-rdf 95 --min-scs 95 --min-ssr 50 --enforce-thresholds --json
+python3 ntf_multimodal_benchmark.py --dataset eval/datasets/multimodal_regression.jsonl --output eval/results/multimodal_latest.json --docs-output docs/benchmarking/multimodal_latest.json --history-file docs/benchmarking/multimodal_history.json --min-rdf 97 --min-scs 97 --min-ssr 70 --enforce-thresholds --json
 ```
 
 Result set (4,500-word synthetic high-entropy agent stream):
@@ -179,6 +179,7 @@ Notes:
 - **SSR**: weighted risk score from injection markers + sensitive-pattern detection
 
 `ntf_multimodal_benchmark.py` runs dataset-wide evaluation and can persist reports to `eval/results/` and `docs/benchmarking/` for site visibility.
+It can also append rolling summaries to `docs/benchmarking/multimodal_history.json` for trend tracking.
 
 Available datasets:
 - `eval/datasets/multimodal_regression.jsonl`
@@ -186,6 +187,7 @@ Available datasets:
 - `eval/datasets/multimodal_medical.jsonl`
 - `eval/datasets/multimodal_legal.jsonl`
 - `eval/datasets/multimodal_code_heavy.jsonl`
+- `eval/datasets/multimodal_expanded_120.jsonl`
 
 ## 6. Quick Start
 
@@ -194,7 +196,7 @@ python3 ntf_standard.py --text "Agent state relay anchor drift pulse mirror cons
 python3 ntf_standard.py --benchmark
 python3 ntf_realtime_eval.py --response-files responses/chatgpt_normal.txt
 python3 ntf_multimodal_pipeline.py --input "flux anchor\n\n```python\nprint(1)\n```" --json
-python3 ntf_multimodal_benchmark.py --dataset eval/datasets/multimodal_regression.jsonl --output eval/results/multimodal_latest.json --docs-output docs/benchmarking/multimodal_latest.json --min-rdf 95 --min-scs 95 --min-ssr 50 --enforce-thresholds --json
+python3 ntf_multimodal_benchmark.py --dataset eval/datasets/multimodal_regression.jsonl --output eval/results/multimodal_latest.json --docs-output docs/benchmarking/multimodal_latest.json --history-file docs/benchmarking/multimodal_history.json --min-rdf 97 --min-scs 97 --min-ssr 70 --enforce-thresholds --json
 ```
 
 ---

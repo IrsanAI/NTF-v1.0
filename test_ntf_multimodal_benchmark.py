@@ -3,13 +3,24 @@
 import json
 from pathlib import Path
 
-from ntf_multimodal_benchmark import check_thresholds, load_jsonl, persist_results, run_benchmark
+from ntf_multimodal_benchmark import (
+    append_history_entry,
+    check_thresholds,
+    load_jsonl,
+    persist_results,
+    run_benchmark,
+)
 
 
 def test_load_jsonl_dataset():
     rows = load_jsonl(Path("eval/datasets/multimodal_regression.jsonl"))
     assert len(rows) >= 3
     assert all("text" in r for r in rows)
+
+
+def test_expanded_dataset_has_over_100_cases():
+    rows = load_jsonl(Path("eval/datasets/multimodal_expanded_120.jsonl"))
+    assert len(rows) >= 100
 
 
 def test_run_benchmark_summary_and_results():
@@ -37,3 +48,12 @@ def test_threshold_checks_return_flags():
     assert flags["pass_rdf"] is True
     assert flags["pass_scs"] is True
     assert flags["pass_ssr"] is True
+
+
+def test_append_history_entry(tmp_path):
+    out = run_benchmark(Path("eval/datasets/multimodal_regression.jsonl"))
+    hist_path = tmp_path / "hist.json"
+    history = append_history_entry(out, hist_path)
+    assert hist_path.exists()
+    assert len(history["runs"]) == 1
+    assert history["runs"][0]["avg_rdf"] == out["summary"]["avg_rdf"]

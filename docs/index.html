@@ -262,6 +262,16 @@
         </div>
 
         <div class="step">
+          <div class="row" style="justify-content: space-between;">
+            <strong>Latest Benchmark Trend (History)</strong>
+            <span class="pill">auto-loaded</span>
+          </div>
+          <div id="latestBenchHistory" class="table-wrap">
+            <p style="color:#9cb0d5;">Lade Verlauf...</p>
+          </div>
+        </div>
+
+        <div class="step">
           <strong>Stille-Post Validator</strong>
           <p>Füge Antwort aus externem LLM ein (nachdem du den kopierten Prompt dort eingesetzt hast). Danach messen wir Verständnis-Übereinstimmung.</p>
           <textarea id="llmBackResponse" placeholder="Füge hier die Rückantwort des externen LLM ein..."></textarea>
@@ -525,6 +535,42 @@
         });
     }
 
+
+    function loadBenchmarkHistory() {
+      const target = document.getElementById("latestBenchHistory");
+      fetch("./benchmarking/multimodal_history.json", { cache: "no-store" })
+        .then(r => {
+          if (!r.ok) throw new Error("history not found");
+          return r.json();
+        })
+        .then(data => {
+          const runs = (data.runs || []).slice(-5).reverse();
+          if (!runs.length) {
+            target.innerHTML = '<p style="color:#9cb0d5;">Noch keine History-Runs vorhanden.</p>';
+            return;
+          }
+          target.innerHTML = `
+            <table>
+              <thead>
+                <tr><th>Generated</th><th>Cases</th><th>avg RDF</th><th>avg SCS</th><th>avg SSR</th></tr>
+              </thead>
+              <tbody>
+                ${runs.map(r => `<tr>
+                  <td>${r.generated_at ?? '-'}</td>
+                  <td>${r.cases ?? '-'}</td>
+                  <td>${r.avg_rdf ?? '-'}</td>
+                  <td>${r.avg_scs ?? '-'}</td>
+                  <td>${r.avg_ssr ?? '-'}</td>
+                </tr>`).join('')}
+              </tbody>
+            </table>
+          `;
+        })
+        .catch(() => {
+          target.innerHTML = '<p style="color:#ffe7ab;">Noch keine History veröffentlicht. Nutze --history-file docs/benchmarking/multimodal_history.json.</p>';
+        });
+    }
+
     function refreshBenchUI() {
       renderTable("humanTableWrap", state.humanRuns, true);
       renderTable("agentTableWrap", state.agentRuns, false);
@@ -644,6 +690,7 @@
     renderFindings();
     refreshBenchUI();
     loadLatestBenchmarkSnapshot();
+    loadBenchmarkHistory();
   </script>
 </body>
 </html>
