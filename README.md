@@ -185,3 +185,8 @@ python3 ntf_realtime_eval.py --response-files responses/chatgpt_normal.txt
 - [x] Fully functional `ntf_standard.py` in root.
 - [x] `RESEARCH_DATA.md` with semantic clustering & gravity centers.
 - [x] `PROGRESS_CHECKIN.md` with first-time visitor perspective + scenario check-ins.
+
+
+## 8. License
+
+This repository is licensed under the MIT License. See `LICENSE`.
