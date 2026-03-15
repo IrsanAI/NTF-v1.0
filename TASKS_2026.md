@@ -19,6 +19,9 @@
 - [x] Zeitreihen-Dashboard-Basis (History JSON + UI Anzeige der letzten Runs)
 - [x] Dataset-Coverage auf >100 Cases erweitert (`multimodal_expanded_120.jsonl`)
 - [x] CI-Matrix für mehrere Python-Versionen aktiviert
+- [x] Drift-Analyse: automatische Delta-Berechnung zwischen History-Runs
+- [x] Dataset-Coverage auf >500 Cases erweitert (`multimodal_expanded_600.jsonl`)
+- [x] CI Quality Gates um Per-Case Floor-Werte ergänzt
 
 ## In Progress
 - [ ] Realistische RDF-Variante mit stärkerer Semantikkomponente (Embedding/Model-based)
@@ -26,9 +29,9 @@
 - [ ] SSR erweitern (kontextsensitives Risk-Scoring statt Regex/Marker-only)
 
 ## Next (highest priority)
-- [ ] Drift-Analyse: automatische Delta-Berechnung zwischen History-Runs
-- [ ] Dataset-Coverage auf >500 Cases ausbauen
-- [ ] CI Quality Gates um Per-Case Floor-Werte ergänzen (nicht nur Durchschnitt)
+- [ ] Delta-Drift visualisieren (Sparkline/Chart statt Tabelle)
+- [ ] Dataset-Coverage auf >1000 Cases ausbauen
+- [ ] Quality-Gates pro Domänen-Dataset differenzieren
 
 ## Later
 - [ ] MindMaster Connector produktivisieren (official export adapters)

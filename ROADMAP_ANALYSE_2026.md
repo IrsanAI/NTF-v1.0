@@ -118,11 +118,13 @@ Bereits umgesetzt als v0.3-Basis:
   - zusätzliche Domänen-Datasets (`finance`, `medical`, `legal`, `code-heavy`)
 - Dashboard-Readiness:
   - latest Snapshot für Site-Load unter `docs/benchmarking/multimodal_latest.json`
-  - History-Track unter `docs/benchmarking/multimodal_history.json`
+  - History-Track unter `docs/benchmarking/multimodal_history.json` inkl. Delta-Werten
 - Skalierung Datensätze:
   - >100 Cases Baseline (`multimodal_expanded_120.jsonl`)
+  - >500 Cases Expansion (`multimodal_expanded_600.jsonl`)
 - CI-Härtung:
   - Python-Matrix (3.10 + 3.11) + strengere Threshold-Gates
+  - Per-Case-Gates zusätzlich zu Durchschnittswerten
 
 Nächste Iteration:
 - RDF von lexical + sequence blend auf stärkere semantische Metrik (Embedding/Model-based) erweitern.

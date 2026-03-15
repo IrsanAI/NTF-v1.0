@@ -18,18 +18,20 @@ def test_load_jsonl_dataset():
     assert all("text" in r for r in rows)
 
 
-def test_expanded_dataset_has_over_100_cases():
-    rows = load_jsonl(Path("eval/datasets/multimodal_expanded_120.jsonl"))
-    assert len(rows) >= 100
+def test_expanded_datasets_scale_targets():
+    rows_120 = load_jsonl(Path("eval/datasets/multimodal_expanded_120.jsonl"))
+    rows_600 = load_jsonl(Path("eval/datasets/multimodal_expanded_600.jsonl"))
+    assert len(rows_120) >= 100
+    assert len(rows_600) >= 500
 
 
 def test_run_benchmark_summary_and_results():
     out = run_benchmark(Path("eval/datasets/multimodal_regression.jsonl"))
-    assert out["summary"]["cases"] >= 3
-    assert "avg_rdf" in out["summary"]
-    assert "avg_scs" in out["summary"]
-    assert "avg_ssr" in out["summary"]
-    assert "generated_at" in out["summary"]
+    summary = out["summary"]
+    assert summary["cases"] >= 3
+    assert "avg_rdf" in summary and "avg_scs" in summary and "avg_ssr" in summary
+    assert "min_case_rdf" in summary and "min_case_scs" in summary and "min_case_ssr" in summary
+    assert "generated_at" in summary
     assert all("risk_level" in r for r in out["results"])
 
 
@@ -44,16 +46,31 @@ def test_persist_results(tmp_path):
 
 def test_threshold_checks_return_flags():
     out = run_benchmark(Path("eval/datasets/multimodal_regression.jsonl"))
-    flags = check_thresholds(out, min_rdf=90, min_scs=90, min_ssr=40)
+    flags = check_thresholds(
+        out,
+        min_rdf=90,
+        min_scs=90,
+        min_ssr=40,
+        min_case_rdf=90,
+        min_case_scs=90,
+        min_case_ssr=30,
+    )
     assert flags["pass_rdf"] is True
     assert flags["pass_scs"] is True
     assert flags["pass_ssr"] is True
+    assert flags["pass_case_rdf"] is True
+    assert flags["pass_case_scs"] is True
+    assert flags["pass_case_ssr"] is True
 
 
-def test_append_history_entry(tmp_path):
+def test_append_history_entry_has_delta(tmp_path):
     out = run_benchmark(Path("eval/datasets/multimodal_regression.jsonl"))
     hist_path = tmp_path / "hist.json"
-    history = append_history_entry(out, hist_path)
+    first = append_history_entry(out, hist_path)
+    second = append_history_entry(out, hist_path)
     assert hist_path.exists()
-    assert len(history["runs"]) == 1
-    assert history["runs"][0]["avg_rdf"] == out["summary"]["avg_rdf"]
+    assert len(first["runs"]) == 1
+    assert len(second["runs"]) == 2
+    assert "delta_avg_rdf" in second["runs"][-1]
+    assert "delta_avg_scs" in second["runs"][-1]
+    assert "delta_avg_ssr" in second["runs"][-1]

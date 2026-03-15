@@ -552,7 +552,7 @@
           target.innerHTML = `
             <table>
               <thead>
-                <tr><th>Generated</th><th>Cases</th><th>avg RDF</th><th>avg SCS</th><th>avg SSR</th></tr>
+                <tr><th>Generated</th><th>Cases</th><th>avg RDF</th><th>avg SCS</th><th>avg SSR</th><th>ΔRDF</th><th>ΔSCS</th><th>ΔSSR</th></tr>
               </thead>
               <tbody>
                 ${runs.map(r => `<tr>
@@ -561,6 +561,9 @@
                   <td>${r.avg_rdf ?? '-'}</td>
                   <td>${r.avg_scs ?? '-'}</td>
                   <td>${r.avg_ssr ?? '-'}</td>
+                  <td>${r.delta_avg_rdf ?? 0}</td>
+                  <td>${r.delta_avg_scs ?? 0}</td>
+                  <td>${r.delta_avg_ssr ?? 0}</td>
                 </tr>`).join('')}
               </tbody>
             </table>

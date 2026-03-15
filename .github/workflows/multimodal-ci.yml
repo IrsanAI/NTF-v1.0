@@ -34,7 +34,7 @@ jobs:
         run: |
           python test_ntf_comprehensive.py
 
-      - name: Run multimodal benchmark with threshold gates
+      - name: Run multimodal benchmark with quality gates
         run: |
           python ntf_multimodal_benchmark.py \
             --dataset eval/datasets/multimodal_regression.jsonl \
@@ -44,6 +44,9 @@ jobs:
             --min-rdf 97 \
             --min-scs 97 \
             --min-ssr 70 \
+            --min-case-rdf 95 \
+            --min-case-scs 95 \
+            --min-case-ssr 35 \
             --enforce-thresholds \
             --json
 
@@ -54,6 +57,7 @@ jobs:
           python ntf_multimodal_benchmark.py --dataset eval/datasets/multimodal_legal.jsonl --json
           python ntf_multimodal_benchmark.py --dataset eval/datasets/multimodal_code_heavy.jsonl --json
           python ntf_multimodal_benchmark.py --dataset eval/datasets/multimodal_expanded_120.jsonl --json
+          python ntf_multimodal_benchmark.py --dataset eval/datasets/multimodal_expanded_600.jsonl --json
 
       - name: Upload benchmark artifact
         uses: actions/upload-artifact@v4

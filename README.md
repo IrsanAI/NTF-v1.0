@@ -125,7 +125,7 @@ Command:
 python3 ntf_standard.py --benchmark
 python3 ntf_realtime_eval.py --response-files responses/chatgpt_normal.txt
 python3 ntf_multimodal_pipeline.py --input "flux anchor\n\n```python\nprint(1)\n```" --json
-python3 ntf_multimodal_benchmark.py --dataset eval/datasets/multimodal_regression.jsonl --output eval/results/multimodal_latest.json --docs-output docs/benchmarking/multimodal_latest.json --history-file docs/benchmarking/multimodal_history.json --min-rdf 97 --min-scs 97 --min-ssr 70 --enforce-thresholds --json
+python3 ntf_multimodal_benchmark.py --dataset eval/datasets/multimodal_regression.jsonl --output eval/results/multimodal_latest.json --docs-output docs/benchmarking/multimodal_latest.json --history-file docs/benchmarking/multimodal_history.json --min-rdf 97 --min-scs 97 --min-ssr 70 --min-case-rdf 95 --min-case-scs 95 --min-case-ssr 35 --enforce-thresholds --json
 ```
 
 Result set (4,500-word synthetic high-entropy agent stream):
@@ -188,6 +188,7 @@ Available datasets:
 - `eval/datasets/multimodal_legal.jsonl`
 - `eval/datasets/multimodal_code_heavy.jsonl`
 - `eval/datasets/multimodal_expanded_120.jsonl`
+- `eval/datasets/multimodal_expanded_600.jsonl`
 
 ## 6. Quick Start
 
@@ -196,7 +197,7 @@ python3 ntf_standard.py --text "Agent state relay anchor drift pulse mirror cons
 python3 ntf_standard.py --benchmark
 python3 ntf_realtime_eval.py --response-files responses/chatgpt_normal.txt
 python3 ntf_multimodal_pipeline.py --input "flux anchor\n\n```python\nprint(1)\n```" --json
-python3 ntf_multimodal_benchmark.py --dataset eval/datasets/multimodal_regression.jsonl --output eval/results/multimodal_latest.json --docs-output docs/benchmarking/multimodal_latest.json --history-file docs/benchmarking/multimodal_history.json --min-rdf 97 --min-scs 97 --min-ssr 70 --enforce-thresholds --json
+python3 ntf_multimodal_benchmark.py --dataset eval/datasets/multimodal_regression.jsonl --output eval/results/multimodal_latest.json --docs-output docs/benchmarking/multimodal_latest.json --history-file docs/benchmarking/multimodal_history.json --min-rdf 97 --min-scs 97 --min-ssr 70 --min-case-rdf 95 --min-case-scs 95 --min-case-ssr 35 --enforce-thresholds --json
 ```
 
 ---

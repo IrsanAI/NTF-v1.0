@@ -4,7 +4,10 @@
     "avg_rdf": 99.83,
     "avg_scs": 100.0,
     "avg_ssr": 79.33,
-    "generated_at": "2026-03-15T13:34:21.906508+00:00",
+    "min_case_rdf": 99.7,
+    "min_case_scs": 100.0,
+    "min_case_ssr": 38.0,
+    "generated_at": "2026-03-15T13:57:45.137630+00:00",
     "dataset": "eval/datasets/multimodal_regression.jsonl"
   },
   "results": [

@@ -30,6 +30,7 @@ Die GitHub Page wurde zu einer modernen, interaktiven **FluxLab-Erfahrung** migr
 - CI-Workflow `.github/workflows/multimodal-ci.yml` prüft Multimodal-Tests + Benchmark bei Push/PR.
 - Neuester Benchmark-Snapshot wird als `docs/benchmarking/multimodal_latest.json` bereitgestellt und kann in der Page automatisch geladen werden.
 - Verlauf (History) wird in `docs/benchmarking/multimodal_history.json` geführt und als Trend-Tabelle angezeigt.
+- Delta-Analyse (ΔRDF/ΔSCS/ΔSSR) zeigt Veränderung zwischen den letzten Runs.
 
 ## Wichtige Architektur-Notiz (GitHub Pages)
 
