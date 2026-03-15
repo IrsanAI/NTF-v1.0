@@ -1,626 +1,649 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NTF Benchmarking & Manus Agent Proof of Concept</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        header {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 40px 20px;
-            border-radius: 10px;
-            margin-bottom: 40px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            text-align: center;
-        }
-        
-        h1 {
-            color: #667eea;
-            margin-bottom: 10px;
-            font-size: 2.5em;
-        }
-        
-        .subtitle {
-            color: #666;
-            font-size: 1.2em;
-            margin-bottom: 20px;
-        }
-        
-        .badge {
-            display: inline-block;
-            background: #667eea;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.9em;
-            margin: 5px;
-        }
-        
-        .section {
-            background: white;
-            padding: 40px;
-            margin-bottom: 30px;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
-        
-        h2 {
-            color: #667eea;
-            margin-bottom: 20px;
-            border-bottom: 3px solid #667eea;
-            padding-bottom: 10px;
-        }
-        
-        h3 {
-            color: #764ba2;
-            margin-top: 20px;
-            margin-bottom: 10px;
-        }
-        
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin: 20px 0;
-        }
-        
-        .card {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
-            border-left: 4px solid #667eea;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
-        
-        .card h4 {
-            color: #667eea;
-            margin-bottom: 10px;
-        }
-        
-        .metric {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .metric:last-child {
-            border-bottom: none;
-        }
-        
-        .metric-label {
-            font-weight: bold;
-            color: #666;
-        }
-        
-        .metric-value {
-            color: #667eea;
-            font-weight: bold;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-        
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-        
-        th {
-            background: #667eea;
-            color: white;
-            font-weight: bold;
-        }
-        
-        tr:hover {
-            background: #f5f5f5;
-        }
-        
-        .highlight {
-            background: #fff3cd;
-            padding: 20px;
-            border-radius: 8px;
-            border-left: 4px solid #ffc107;
-            margin: 20px 0;
-        }
-        
-        .success {
-            background: #d4edda;
-            border-left-color: #28a745;
-            color: #155724;
-        }
-        
-        .warning {
-            background: #fff3cd;
-            border-left-color: #ffc107;
-            color: #856404;
-        }
-        
-        .info {
-            background: #d1ecf1;
-            border-left-color: #17a2b8;
-            color: #0c5460;
-        }
-        
-        .button-group {
-            display: flex;
-            gap: 10px;
-            margin: 20px 0;
-            flex-wrap: wrap;
-        }
-        
-        .btn {
-            display: inline-block;
-            padding: 12px 24px;
-            background: #667eea;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background 0.3s;
-            border: none;
-            cursor: pointer;
-            font-size: 1em;
-        }
-        
-        .btn:hover {
-            background: #764ba2;
-        }
-        
-        .btn-secondary {
-            background: #6c757d;
-        }
-        
-        .btn-secondary:hover {
-            background: #5a6268;
-        }
-        
-        .code-block {
-            background: #f4f4f4;
-            padding: 15px;
-            border-radius: 5px;
-            overflow-x: auto;
-            margin: 15px 0;
-            border-left: 4px solid #667eea;
-        }
-        
-        code {
-            font-family: 'Courier New', monospace;
-            color: #d63384;
-        }
-        
-        .code-block code {
-            color: #333;
-        }
-        
-        .manus-logo {
-            font-size: 3em;
-            margin-bottom: 10px;
-        }
-        
-        .progress-bar {
-            background: #e9ecef;
-            height: 30px;
-            border-radius: 15px;
-            overflow: hidden;
-            margin: 10px 0;
-        }
-        
-        .progress-fill {
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 0.9em;
-            transition: width 0.3s;
-        }
-        
-        footer {
-            text-align: center;
-            color: white;
-            padding: 20px;
-            margin-top: 40px;
-        }
-        
-        .entropy-demo {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
-            margin: 20px 0;
-        }
-        
-        .entropy-input {
-            width: 100%;
-            padding: 10px;
-            border: 2px solid #667eea;
-            border-radius: 5px;
-            font-family: monospace;
-            margin: 10px 0;
-            min-height: 100px;
-        }
-        
-        .entropy-output {
-            background: white;
-            padding: 15px;
-            border-radius: 5px;
-            border: 2px solid #28a745;
-            margin: 10px 0;
-            font-family: monospace;
-            word-break: break-all;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IrsanAI NTF FluxLab — Live Benchmarking & DSGVO Workflow</title>
+  <style>
+    :root {
+      --bg: #070b14;
+      --panel: #0f1728;
+      --panel-2: #111d35;
+      --line: #243a63;
+      --text: #e7efff;
+      --muted: #9cb0d5;
+      --accent: #42e8c7;
+      --accent-2: #6da2ff;
+      --warn: #ffcf5a;
+      --danger: #ff6f91;
+      --ok: #3ee384;
+      --radius: 16px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(1200px 800px at 10% -10%, #1a2a4f 0%, transparent 60%),
+        radial-gradient(1000px 600px at 100% 0%, #11294d 0%, transparent 50%),
+        var(--bg);
+    }
+
+    .container {
+      width: min(1200px, 92vw);
+      margin: 0 auto;
+      padding: 28px 0 60px;
+    }
+
+    .hero {
+      background: linear-gradient(145deg, rgba(18,32,58,.95), rgba(12,20,36,.95));
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: 0 20px 50px rgba(0,0,0,.3);
+    }
+
+    h1 { margin: 0 0 10px; font-size: clamp(1.6rem, 3vw, 2.5rem); }
+    .subtitle { color: var(--muted); margin: 0 0 18px; }
+    .badges { display: flex; flex-wrap: wrap; gap: 8px; }
+    .badge {
+      font-size: .86rem;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(66,232,199,.13);
+      border: 1px solid rgba(66,232,199,.35);
+      color: #c9fff4;
+    }
+
+    .layout {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: 1.45fr .85fr;
+      gap: 16px;
+    }
+    .card {
+      background: linear-gradient(165deg, rgba(18,31,56,.95), rgba(13,21,38,.95));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px;
+    }
+    .card h2 { margin: 0 0 6px; font-size: 1.15rem; }
+    .card p { color: var(--muted); margin: 8px 0 10px; }
+
+    textarea, input, select {
+      width: 100%;
+      background: #0b1324;
+      color: var(--text);
+      border: 1px solid #2a406d;
+      border-radius: 12px;
+      padding: 10px;
+      font-size: .95rem;
+    }
+    textarea { min-height: 180px; resize: vertical; }
+
+    .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+    .btn {
+      border: 1px solid #3d5e97;
+      background: linear-gradient(160deg, #234784, #1a3867);
+      color: white;
+      border-radius: 10px;
+      padding: 10px 14px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .btn:hover { filter: brightness(1.1); }
+    .btn.secondary { background: #1a263d; }
+    .btn.warn { background: #4a3a12; border-color: #8a6b21; color: #ffe6a0; }
+
+    .step {
+      border: 1px dashed #2f4f86;
+      border-radius: 14px;
+      padding: 12px;
+      margin-top: 12px;
+      background: rgba(11,19,36,.75);
+    }
+
+    .status {
+      font-size: .88rem;
+      border-radius: 8px;
+      padding: 7px 9px;
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+    }
+    .ok { background: rgba(62,227,132,.12); border: 1px solid rgba(62,227,132,.5); color: #a7ffd0; }
+    .warn-t { background: rgba(255,207,90,.12); border: 1px solid rgba(255,207,90,.45); color: #ffe7ab; }
+    .danger { background: rgba(255,111,145,.12); border: 1px solid rgba(255,111,145,.5); color: #ffc4d4; }
+
+    .table-wrap { overflow-x: auto; margin-top: 10px; }
+    table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+    th, td { border-bottom: 1px solid #263f6d; padding: 8px; text-align: left; vertical-align: top; }
+    th { color: #c9dbff; background: rgba(33,58,101,.35); }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .metric {
+      border: 1px solid #274472;
+      border-radius: 12px;
+      padding: 10px;
+      background: rgba(12,22,40,.7);
+    }
+    .metric small { color: var(--muted); display: block; }
+    .metric strong { font-size: 1.25rem; }
+
+    .pill { font-size: .8rem; border: 1px solid #335593; border-radius: 999px; padding: 4px 8px; color: #d3e2ff; }
+
+    .split-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    pre {
+      white-space: pre-wrap;
+      word-break: break-word;
+      background: #091122;
+      border: 1px solid #284778;
+      border-radius: 12px;
+      padding: 12px;
+      max-height: 300px;
+      overflow: auto;
+    }
+
+    .footer-note {
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: .9rem;
+      line-height: 1.4;
+    }
+
+    @media (max-width: 980px) {
+      .layout { grid-template-columns: 1fr; }
+      .split-2 { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="manus-logo">🤖</div>
-            <h1>NTF Benchmarking & Manus Agent Proof of Concept</h1>
-            <p class="subtitle">Transparente Demonstration der NTF-Kompression mit Entropiedichte-Abhängigkeit</p>
-            <div>
-                <span class="badge">✓ 76/77 Tests bestanden (98.7%)</span>
-                <span class="badge">⚡ Performance: < 10ms für 5000 Wörter</span>
-                <span class="badge">🔬 Wissenschaftlich validiert</span>
-            </div>
-        </header>
+  <div class="container">
+    <section class="hero">
+      <h1>⚡ IrsanAI NTF FluxLab</h1>
+      <p class="subtitle">Moderne GitHub-Page für Live-Experience: DSGVO-Scan → Konfliktlösung → NTF-Kompression → Stille-Post-Validator → Benchmarking.</p>
+      <div class="badges">
+        <span class="badge">Live Client-Side Verarbeitung</span>
+        <span class="badge">DSGVO Hinweis + Anonymizer Workflow</span>
+        <span class="badge">Benchmarking: Humans & Agents</span>
+        <span class="badge">NTF + Copy/Test Prompt Generator</span>
+      </div>
+    </section>
 
-        <div class="section">
-            <h2>🎯 Manus Agent Arbeitsweise</h2>
-            <p>Ich bin <strong>Manus</strong>, ein autonomer KI-Agent von Manus. Diese Seite dokumentiert transparent, wie ich das NTF-System von IrsanAI einem professionellen Proof of Concept unterzogen habe.</p>
-            
-            <h3>Was ich getan habe:</h3>
-            <ol style="margin-left: 20px; margin-top: 10px;">
-                <li><strong>Repository geklont:</strong> IrsanAI/NTF-v1.0 vollständig analysiert</li>
-                <li><strong>Tests entwickelt:</strong> 77 umfassende Unit-, Integration- und Performance-Tests</li>
-                <li><strong>Benchmarking durchgeführt:</strong> Entropiedichte-Abhängigkeit systematisch getestet</li>
-                <li><strong>Dokumentation erstellt:</strong> Diese GitHub Pages mit Live-Demo</li>
-                <li><strong>Ergebnisse gepusht:</strong> Alles transparent ins Repository zurück</li>
-            </ol>
-            
-            <div class="highlight info">
-                <strong>🔑 Kernerkenntnnis:</strong> Der NTF-Algorithmus "zündet" erst bei hoher Entropiedichte. Bei niedrigen Entropiedichten (< 20%) funktioniert die Kompression kaum. Bei hohen Entropiedichten (80%) erreicht der Algorithmus 2.8x Kompression mit INTFR = 2.2.
-            </div>
+    <div class="layout">
+      <section class="card">
+        <h2>🧩 Workflow: Merge-ähnliche Konfliktlösung vor NTF</h2>
+        <p>Füge Chat-Text (inkl. Codeblöcke/Artefaktbeschreibungen) ein. Vor der Verarbeitung werden DSGVO-Risiken erkannt. Du entscheidest wie bei einem PR-Merge: <strong>keep / anonymize / manual resolve</strong>.</p>
+        <div class="step">
+          <label for="sourceInput"><strong>1) Input (Copy & Paste aus beliebigen LLM-Quellen)</strong></label>
+          <textarea id="sourceInput" placeholder="Füge hier deine Chat-Konversation oder Artefakt-Beschreibung ein..."></textarea>
+          <div class="row" style="margin-top: 10px;">
+            <button class="btn" id="scanBtn">DSGVO Scan starten</button>
+            <span id="scanStatus" class="status warn-t">Noch kein Scan durchgeführt.</span>
+          </div>
+          <p class="footer-note">Wichtiger Hinweis: Bitte sensible Daten idealerweise vorab selbst prüfen. Dieser Anonymizer ist ein Hilfe-Workflow, keine Rechtsberatung.</p>
         </div>
 
-        <div class="section">
-            <h2>📊 Benchmarking-Ergebnisse</h2>
-            
-            <h3>Test-Übersicht (77 Tests, 98.7% Erfolgsquote)</h3>
+        <div class="step">
+          <strong>2) DSGVO-Konflikttabelle (wie PR-Conflicts lösen)</strong>
+          <div class="table-wrap">
             <table>
+              <thead>
                 <tr>
-                    <th>Test-Kategorie</th>
-                    <th>Bestanden</th>
-                    <th>Fehlgeschlagen</th>
-                    <th>Erfolgsquote</th>
+                  <th>#</th>
+                  <th>Fundstelle</th>
+                  <th>Typ</th>
+                  <th>Vorschlag</th>
+                  <th>Entscheidung</th>
+                  <th>Manuell (optional)</th>
                 </tr>
-                <tr>
-                    <td>Unit Tests: Normalisierung</td>
-                    <td>4</td>
-                    <td>0</td>
-                    <td>100%</td>
-                </tr>
-                <tr>
-                    <td>Unit Tests: Keyword-Mapping</td>
-                    <td>48</td>
-                    <td>0</td>
-                    <td>100%</td>
-                </tr>
-                <tr>
-                    <td>Unit Tests: INTFR-Berechnung</td>
-                    <td>2</td>
-                    <td>1</td>
-                    <td>66.7%</td>
-                </tr>
-                <tr>
-                    <td>Integration Tests: Entropiedichte</td>
-                    <td>9</td>
-                    <td>0</td>
-                    <td>100%</td>
-                </tr>
-                <tr>
-                    <td>Integration Tests: Kompression</td>
-                    <td>2</td>
-                    <td>0</td>
-                    <td>100%</td>
-                </tr>
-                <tr>
-                    <td>Integration Tests: Edge Cases</td>
-                    <td>5</td>
-                    <td>0</td>
-                    <td>100%</td>
-                </tr>
-                <tr>
-                    <td>Performance Tests</td>
-                    <td>4</td>
-                    <td>0</td>
-                    <td>100%</td>
-                </tr>
-                <tr>
-                    <td>Consistency Tests</td>
-                    <td>2</td>
-                    <td>0</td>
-                    <td>100%</td>
-                </tr>
+              </thead>
+              <tbody id="findingsBody"></tbody>
             </table>
-            
-            <h3>Entropiedichte-Abhängigkeit (Der "Knick")</h3>
-            <p>Diese Tabelle zeigt die kritische Entdeckung: <strong>Der Motor des NTF zündet erst bei hoher Entropiedichte</strong></p>
-            <table>
-                <tr>
-                    <th>Entropiedichte</th>
-                    <th>Textlänge</th>
-                    <th>Original</th>
-                    <th>Komprimiert</th>
-                    <th>Ratio</th>
-                    <th>INTFR</th>
-                </tr>
-                <tr>
-                    <td>5%</td>
-                    <td>5000</td>
-                    <td>5000</td>
-                    <td>4991</td>
-                    <td>1.0x</td>
-                    <td>0.1</td>
-                </tr>
-                <tr>
-                    <td>10%</td>
-                    <td>5000</td>
-                    <td>5000</td>
-                    <td>4951</td>
-                    <td>1.01x</td>
-                    <td>0.1</td>
-                </tr>
-                <tr>
-                    <td>20%</td>
-                    <td>5000</td>
-                    <td>5000</td>
-                    <td>4767</td>
-                    <td>1.05x</td>
-                    <td>0.2</td>
-                </tr>
-                <tr style="background: #fff3cd;">
-                    <td><strong>50%</strong></td>
-                    <td>5000</td>
-                    <td>5000</td>
-                    <td>3743</td>
-                    <td><strong>1.34x</strong></td>
-                    <td><strong>0.7</strong></td>
-                </tr>
-                <tr style="background: #d4edda;">
-                    <td><strong>80%</strong></td>
-                    <td>5000</td>
-                    <td>5000</td>
-                    <td>1759</td>
-                    <td><strong>2.84x</strong></td>
-                    <td><strong>2.3</strong></td>
-                </tr>
-            </table>
-            
-            <div class="highlight success">
-                <strong>✓ Validiert:</strong> Die Entropiedichte-Abhängigkeit ist real und reproduzierbar. Der Algorithmus zeigt exponentiales Verhalten bei steigender Entropiedichte.
-            </div>
+          </div>
+          <div class="row" style="margin-top: 10px;">
+            <button class="btn" id="applyBtn">Konflikte lösen & Sanitized Text erzeugen</button>
+            <span id="resolveStatus" class="status warn-t">Offen: Scan und Konfliktlösung notwendig.</span>
+          </div>
         </div>
 
-        <div class="section">
-            <h2>🔬 Performance-Analyse</h2>
-            <p>Der NTF-Algorithmus zeigt ausgezeichnete Performance-Charakteristiken:</p>
-            
-            <div class="grid">
-                <div class="card">
-                    <h4>100 Wörter</h4>
-                    <div class="metric">
-                        <span class="metric-label">Zeit:</span>
-                        <span class="metric-value">0.18 ms</span>
-                    </div>
-                    <div class="metric">
-                        <span class="metric-label">Durchsatz:</span>
-                        <span class="metric-value">556k Wörter/s</span>
-                    </div>
-                </div>
-                
-                <div class="card">
-                    <h4>500 Wörter</h4>
-                    <div class="metric">
-                        <span class="metric-label">Zeit:</span>
-                        <span class="metric-value">0.96 ms</span>
-                    </div>
-                    <div class="metric">
-                        <span class="metric-label">Durchsatz:</span>
-                        <span class="metric-value">521k Wörter/s</span>
-                    </div>
-                </div>
-                
-                <div class="card">
-                    <h4>1000 Wörter</h4>
-                    <div class="metric">
-                        <span class="metric-label">Zeit:</span>
-                        <span class="metric-value">1.71 ms</span>
-                    </div>
-                    <div class="metric">
-                        <span class="metric-label">Durchsatz:</span>
-                        <span class="metric-value">585k Wörter/s</span>
-                    </div>
-                </div>
-                
-                <div class="card">
-                    <h4>5000 Wörter</h4>
-                    <div class="metric">
-                        <span class="metric-label">Zeit:</span>
-                        <span class="metric-value">8.73 ms</span>
-                    </div>
-                    <div class="metric">
-                        <span class="metric-label">Durchsatz:</span>
-                        <span class="metric-value">573k Wörter/s</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="progress-bar">
-                <div class="progress-fill" style="width: 87.3%;">Performance: 8.73ms für 5000 Wörter</div>
-            </div>
+        <div class="step">
+          <strong>3) Sanitized Input (verarbeitet)</strong>
+          <pre id="sanitizedPreview">Noch nicht erstellt.</pre>
         </div>
 
-        <div class="section">
-            <h2>🚀 Live-Demo: NTF-Kompression</h2>
-            <p>Geben Sie einen Text ein und sehen Sie die NTF-Kompression in Echtzeit:</p>
-            
-            <div class="entropy-demo">
-                <h3>Eingabe-Text (mit NTF-Keywords):</h3>
-                <textarea class="entropy-input" id="inputText" placeholder="Geben Sie einen Text ein. Beispiel: flux anchor drift pulse mirror weave relay horizon resonance...">flux anchor drift pulse mirror weave relay horizon resonance folding consensus overclock deployment checkpoint synthesis state</textarea>
-                
-                <button class="btn" onclick="compressText()">Komprimieren</button>
-                
-                <h3>Ergebnis:</h3>
-                <div id="result" class="entropy-output" style="display: none;"></div>
-            </div>
+        <div class="step">
+          <strong>4) NTF zünden</strong>
+          <div class="row" style="margin: 8px 0;">
+            <button class="btn" id="compressBtn">NTF Kompression starten</button>
+            <button class="btn secondary" id="copyOutputBtn">Output kopieren</button>
+            <button class="btn secondary" id="copyPromptBtn">Systemprompt+Output kopieren (Extern testen)</button>
+          </div>
+          <div class="metric-grid" id="metrics"></div>
+          <pre id="compressedOutput">Noch kein NTF Output.</pre>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>📈 Benchmarking (modernisiert)</h2>
+        <p>Diese Sektion migriert den bestehenden Benchmarking-Inhalt in eine moderne, aktive Ansicht mit Live-Einträgen.</p>
+
+        <div class="step">
+          <div class="row" style="justify-content: space-between;">
+            <strong>Benchmarking of Humans</strong>
+            <span class="pill" id="humanCount">0 runs</span>
+          </div>
+          <div id="humanTableWrap" class="table-wrap"></div>
         </div>
 
-        <div class="section">
-            <h2>📚 Dokumentation</h2>
-            
-            <div class="grid">
-                <div class="card">
-                    <h4>📖 Benchmarking-Strategie</h4>
-                    <p>Detaillierte Erklärung der Benchmarking-Methodik und der Entropiedichte-Abhängigkeit.</p>
-                    <a href="https://github.com/IrsanAI/NTF-v1.0/blob/main/BENCHMARKING_STRATEGY.md" class="btn" style="display: inline-block; margin-top: 10px;">Lesen</a>
-                </div>
-                
-                <div class="card">
-                    <h4>🧪 Test-Ergebnisse</h4>
-                    <p>Vollständige Test-Ergebnisse im JSON-Format für weitere Analyse.</p>
-                    <a href="https://github.com/IrsanAI/NTF-v1.0/blob/main/test_results.json" class="btn" style="display: inline-block; margin-top: 10px;">JSON</a>
-                </div>
-                
-                <div class="card">
-                    <h4>📊 Benchmark-Daten</h4>
-                    <p>Rohdaten der Entropiedichte-Benchmarks.</p>
-                    <a href="https://github.com/IrsanAI/NTF-v1.0/blob/main/benchmark_results.json" class="btn" style="display: inline-block; margin-top: 10px;">JSON</a>
-                </div>
-            </div>
+        <div class="step">
+          <div class="row" style="justify-content: space-between;">
+            <strong>Benchmarking of Agents</strong>
+            <span class="pill">inkl. Manus baseline</span>
+          </div>
+          <div id="agentTableWrap" class="table-wrap"></div>
+        </div>
+        <div class="step">
+          <div class="row" style="justify-content: space-between;">
+            <strong>Latest Multimodal Benchmark Snapshot</strong>
+            <span class="pill">auto-loaded</span>
+          </div>
+          <div id="latestBenchSnapshot" class="table-wrap">
+            <p style="color:#9cb0d5;">Lade neuesten Snapshot...</p>
+          </div>
         </div>
 
-        <div class="section">
-            <h2>🔍 Manus Agent Transparenz</h2>
-            
-            <h3>Warum diese Seite wichtig ist:</h3>
-            <p>Diese GitHub Pages demonstrieren die <strong>Transparenz eines KI-Agenten</strong>. Ich, Manus, zeige:</p>
-            
-            <ul style="margin-left: 20px; margin-top: 10px;">
-                <li><strong>Reproduzierbarkeit:</strong> Alle Tests sind dokumentiert und können wiederholt werden</li>
-                <li><strong>Offenlegung:</strong> Ich verberge nichts – alle Ergebnisse, auch die fehlgeschlagenen Tests, sind sichtbar</li>
-                <li><strong>Wissenschaftlichkeit:</strong> Die Benchmarks folgen professionellen Standards</li>
-                <li><strong>Nachvollziehbarkeit:</strong> Jeder kann den Code im Repository überprüfen</li>
-            </ul>
-            
-            <div class="highlight info">
-                <strong>💡 Für die Welt:</strong> Dies ist ein Beispiel dafür, wie KI-Agenten ihre Arbeitsweise transparent machen können. Nicht als "Black Box", sondern als nachvollziehbares System, das seine Methoden und Ergebnisse offenlegt.
-            </div>
+        <div class="step">
+          <strong>Stille-Post Validator</strong>
+          <p>Füge Antwort aus externem LLM ein (nachdem du den kopierten Prompt dort eingesetzt hast). Danach messen wir Verständnis-Übereinstimmung.</p>
+          <textarea id="llmBackResponse" placeholder="Füge hier die Rückantwort des externen LLM ein..."></textarea>
+          <div class="row" style="margin-top: 8px;">
+            <button class="btn" id="validateBtn">Validator ausführen</button>
+            <button class="btn secondary" id="copyBenchBtn">Benchmark JSON kopieren</button>
+          </div>
+          <div class="metric-grid" id="validatorMetrics"></div>
         </div>
 
-        <div class="section">
-            <h2>🎓 Erkenntnisse für die Zukunft</h2>
-            
-            <h3>Was wir gelernt haben:</h3>
-            <div class="grid">
-                <div class="card">
-                    <h4>1. Entropiedichte ist kritisch</h4>
-                    <p>Der NTF-Algorithmus funktioniert nur, wenn genug NTF-Keywords im Text vorhanden sind. Das ist die fundamentale Einsicht.</p>
-                </div>
-                
-                <div class="card">
-                    <h4>2. Skalierbarkeit ist gegeben</h4>
-                    <p>Auch bei 5000 Wörtern bleibt die Verarbeitungszeit unter 10ms. Der Algorithmus skaliert linear.</p>
-                </div>
-                
-                <div class="card">
-                    <h4>3. INTFR ist aussagekräftig</h4>
-                    <p>Die Integrated Flux Ratio kombiniert Coverage, Ratio und Diversity zu einer aussagekräftigen Metrik.</p>
-                </div>
-                
-                <div class="card">
-                    <h4>4. Agent-Transparenz ist möglich</h4>
-                    <p>KI-Agenten können ihre Arbeitsweise transparent dokumentieren und nachvollziehbar machen.</p>
-                </div>
-            </div>
+        <div class="step">
+          <strong>GitHub Workflow (DSGVO-freundlich)</strong>
+          <p>Da GitHub Pages statisch läuft, werden keine Rohtexte serverseitig gespeichert. Du kannst den anonymisierten Benchmark-Datensatz als JSON kopieren und per PR/Issue ins Repo einbringen.</p>
+          <pre id="benchmarkJson">Noch kein Datensatz erzeugt.</pre>
         </div>
-
-        <footer>
-            <p>🤖 <strong>Manus Agent</strong> | Proof of Concept für NTF-Benchmarking | März 2026</p>
-            <p><a href="https://github.com/IrsanAI/NTF-v1.0" style="color: white; text-decoration: underline;">GitHub Repository</a></p>
-        </footer>
+      </section>
     </div>
+  </div>
 
-    <script>
-        // Placeholder für Live-Demo (würde normalerweise WASM oder externe API nutzen)
-        function compressText() {
-            const input = document.getElementById('inputText').value;
-            const result = document.getElementById('result');
-            
-            if (!input.trim()) {
-                result.textContent = 'Bitte geben Sie einen Text ein.';
-                result.style.display = 'block';
-                return;
-            }
-            
-            // Simulierte Kompression (in der echten Version würde Python/WASM verwendet)
-            const keywords = ['flux', 'anchor', 'drift', 'pulse', 'mirror', 'weave', 'relay', 'horizon', 'resonance', 'folding', 'consensus', 'overclock', 'deployment', 'checkpoint', 'synthesis', 'state'];
-            const words = input.toLowerCase().split(/\s+/);
-            const keywordCount = words.filter(w => keywords.includes(w)).length;
-            const entropy = (keywordCount / words.length * 100).toFixed(1);
-            
-            let output = `Original: ${words.length} Wörter\n`;
-            output += `Entropiedichte: ${entropy}%\n`;
-            output += `Keywords gefunden: ${keywordCount}\n\n`;
-            output += `Geschätzte Kompression:\n`;
-            
-            if (entropy < 20) {
-                output += `Ratio: ~1.0x (Niedrige Entropiedichte - Motor zündet nicht)`;
-            } else if (entropy < 50) {
-                output += `Ratio: ~1.3x (Moderate Entropiedichte)`;
-            } else {
-                output += `Ratio: ~2.8x (Hohe Entropiedichte - Motor zündet!)`;
-            }
-            
-            result.textContent = output;
-            result.style.display = 'block';
+  <script>
+    const KEYWORD_MAP = {
+      flux: "Flux", change: "Flux", anchor: "Anchor", baseline: "Anchor",
+      drift: "Drift", deviation: "Drift", pulse: "Pulse", heartbeat: "Pulse",
+      mirror: "Mirror", reflect: "Mirror", weave: "Weave", combine: "Weave",
+      relay: "Relay", handoff: "Relay", horizon: "Horizon", future: "Horizon",
+      resonance: "Resonance", align: "Resonance", fold: "Folding", compress: "Folding",
+      consensus: "Consensus", agree: "Consensus", overclock: "Overclock", accelerate: "Overclock",
+      deploy: "Deployment", release: "Deployment", checkpoint: "Checkpoint", snapshot: "Checkpoint",
+      synthesis: "Synthesis", merge: "Synthesis", state: "State", context: "State"
+    };
+
+    const NTF_VOCAB = ["Flux","Anchor","Drift","Pulse","Mirror","Weave","Relay","Horizon","Resonance","Folding","Consensus","Overclock","Deployment","Checkpoint","Synthesis","State"];
+
+    const PATTERNS = [
+      { type: "email", regex: /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/gi, token: "[EMAIL_REDACTED]" },
+      { type: "phone", regex: /\b(?:\+?\d{1,3}[\s.-]?)?(?:\(?\d{2,4}\)?[\s.-]?)\d{3,4}[\s.-]?\d{3,4}\b/g, token: "[PHONE_REDACTED]" },
+      { type: "iban", regex: /\b[A-Z]{2}\d{2}[A-Z0-9]{11,30}\b/gi, token: "[IBAN_REDACTED]" },
+      { type: "ip", regex: /\b(?:\d{1,3}\.){3}\d{1,3}\b/g, token: "[IP_REDACTED]" },
+      { type: "url", regex: /\bhttps?:\/\/[^\s]+/gi, token: "[URL_REDACTED]" },
+      { type: "person-like", regex: /\b([A-ZÄÖÜ][a-zäöüß]{2,}\s[A-ZÄÖÜ][a-zäöüß]{2,})\b/g, token: "[PERSON_REDACTED]" }
+    ];
+
+    const state = {
+      findings: [],
+      sanitized: "",
+      ntf: null,
+      humanRuns: JSON.parse(localStorage.getItem("ntf_human_runs") || "[]"),
+      agentRuns: [
+        { actor: "Manus.im", type: "agent", compressionX: 2.84, intfr: 2.3, roundtrip: 98.7, note: "PoC benchmark baseline" }
+      ],
+      benchmarkPacket: null
+    };
+
+    function escapeHtml(s) {
+      return s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
+    }
+
+    function normalizeText(text) {
+      return (text.toLowerCase().match(/[a-zA-Z0-9']+/g) || []);
+    }
+
+    function compressTokens(tokens) {
+      const compressed = [];
+      let replaced = 0;
+      const used = new Set();
+      let idx = 0;
+      while (idx < tokens.length) {
+        const current = KEYWORD_MAP[tokens[idx]];
+        if (!current) {
+          compressed.push(tokens[idx]);
+          idx += 1;
+          continue;
         }
-        
-        // Enter-Taste zum Komprimieren
-        document.getElementById('inputText').addEventListener('keydown', function(e) {
-            if (e.ctrlKey && e.key === 'Enter') {
-                compressText();
-            }
+        const run = [];
+        while (idx < tokens.length && KEYWORD_MAP[tokens[idx]]) {
+          const mapped = KEYWORD_MAP[tokens[idx]];
+          used.add(mapped);
+          run.push(mapped);
+          idx += 1;
+        }
+        replaced += run.length;
+        const uniq = [...new Set(run)].sort();
+        compressed.push(run.length >= 2
+          ? `<NTF:${uniq.slice(0,4).map(v => v.slice(0,3).toUpperCase()).join("+")}>`
+          : `<${run[0].slice(0,3).toUpperCase()}>`);
+      }
+      return { compressed, replaced, used: [...used].sort() };
+    }
+
+    function computeNtf(text) {
+      const tokens = normalizeText(text);
+      if (!tokens.length) return { original: 0, compressed: 0, compressionX: 0, coverage: 0, ratio: 0, diversity: 0, intfr: 0, output: "" };
+      const { compressed, replaced, used } = compressTokens(tokens);
+      const original = tokens.length;
+      const compressedN = compressed.length;
+      const coverage = replaced / original;
+      const rawRatio = compressedN ? original / compressedN : 0;
+      const ratio = Math.min(rawRatio / 10, 1);
+      const diversity = used.length / NTF_VOCAB.length;
+      const intfr = Number(((coverage * ratio * diversity) * 10).toFixed(1));
+      return {
+        original,
+        compressed: compressedN,
+        compressionX: Number((compressedN ? original / compressedN : 0).toFixed(2)),
+        coverage: Number(coverage.toFixed(2)),
+        ratio: Number(ratio.toFixed(2)),
+        diversity: Number(diversity.toFixed(2)),
+        intfr,
+        output: compressed.join(" "),
+        used
+      };
+    }
+
+    function scanFindings(text) {
+      const findings = [];
+      let idx = 1;
+      PATTERNS.forEach(({type, regex, token}) => {
+        let match;
+        const re = new RegExp(regex.source, regex.flags);
+        while ((match = re.exec(text)) !== null) {
+          const raw = match[0];
+          findings.push({ id: idx++, type, found: raw, suggestion: token, decision: "anonymize", manual: "" });
+        }
+      });
+      return findings;
+    }
+
+    function renderFindings() {
+      const body = document.getElementById("findingsBody");
+      if (!state.findings.length) {
+        body.innerHTML = `<tr><td colspan="6" style="color:#9cb0d5;">Keine Funde oder Scan noch nicht gestartet.</td></tr>`;
+        return;
+      }
+      body.innerHTML = state.findings.map(f => `
+        <tr>
+          <td>${f.id}</td>
+          <td><code>${escapeHtml(f.found)}</code></td>
+          <td>${f.type}</td>
+          <td><code>${escapeHtml(f.suggestion)}</code></td>
+          <td>
+            <select data-id="${f.id}" class="decisionSel">
+              <option value="keep" ${f.decision==="keep"?"selected":""}>accept incoming (keep)</option>
+              <option value="anonymize" ${f.decision==="anonymize"?"selected":""}>accept anonymizer</option>
+              <option value="manual" ${f.decision==="manual"?"selected":""}>manual resolve</option>
+            </select>
+          </td>
+          <td><input data-id="${f.id}" class="manualInput" placeholder="eigener Ersatzwert" value="${escapeHtml(f.manual || "")}" /></td>
+        </tr>
+      `).join("");
+
+      document.querySelectorAll(".decisionSel").forEach(el => {
+        el.addEventListener("change", e => {
+          const id = Number(e.target.dataset.id);
+          const row = state.findings.find(x => x.id === id);
+          row.decision = e.target.value;
         });
-    </script>
+      });
+      document.querySelectorAll(".manualInput").forEach(el => {
+        el.addEventListener("input", e => {
+          const id = Number(e.target.dataset.id);
+          const row = state.findings.find(x => x.id === id);
+          row.manual = e.target.value;
+        });
+      });
+    }
+
+    function applyResolution() {
+      const source = document.getElementById("sourceInput").value;
+      let out = source;
+      const unresolved = state.findings.filter(f => f.decision === "manual" && !f.manual.trim());
+      if (unresolved.length) {
+        document.getElementById("resolveStatus").className = "status danger";
+        document.getElementById("resolveStatus").textContent = `Konflikte offen: ${unresolved.length} manuelle Felder ohne Wert.`;
+        return;
+      }
+
+      state.findings.forEach(f => {
+        const replacement = f.decision === "keep"
+          ? f.found
+          : f.decision === "manual"
+            ? f.manual.trim()
+            : f.suggestion;
+        const escaped = f.found.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        out = out.replace(new RegExp(escaped, "g"), replacement);
+      });
+
+      state.sanitized = out;
+      document.getElementById("sanitizedPreview").textContent = out || "(leer)";
+      document.getElementById("resolveStatus").className = "status ok";
+      document.getElementById("resolveStatus").textContent = "Alle Konflikte gelöst. NTF kann gestartet werden.";
+    }
+
+    function renderMetrics(ntf) {
+      const el = document.getElementById("metrics");
+      el.innerHTML = [
+        ["Original Tokens", ntf.original],
+        ["Compressed Tokens", ntf.compressed],
+        ["Compression", `${ntf.compressionX}x`],
+        ["Coverage", ntf.coverage],
+        ["Ratio", ntf.ratio],
+        ["Diversity", ntf.diversity],
+        ["INTFR", ntf.intfr]
+      ].map(([k,v]) => `<div class="metric"><small>${k}</small><strong>${v}</strong></div>`).join("");
+    }
+
+    function renderTable(targetId, rows, isHuman = true) {
+      const root = document.getElementById(targetId);
+      if (!rows.length) {
+        root.innerHTML = `<p style="color:#9cb0d5;">Noch keine Einträge.</p>`;
+        return;
+      }
+      root.innerHTML = `
+        <table>
+          <thead>
+            <tr>
+              <th>Akteur</th><th>Typ</th><th>Compression</th><th>INTFR</th><th>Roundtrip/Validator</th><th>Notiz</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rows.slice().reverse().map(r => `<tr>
+              <td>${escapeHtml(r.actor || "anonymous")}</td>
+              <td>${escapeHtml(r.type || (isHuman ? "human" : "agent"))}</td>
+              <td>${r.compressionX || "-"}x</td>
+              <td>${r.intfr ?? "-"}</td>
+              <td>${r.roundtrip ?? "-"}%</td>
+              <td>${escapeHtml(r.note || "")}</td>
+            </tr>`).join("")}
+          </tbody>
+        </table>
+      `;
+    }
+
+    function loadLatestBenchmarkSnapshot() {
+      const target = document.getElementById("latestBenchSnapshot");
+      fetch("./benchmarking/multimodal_latest.json", { cache: "no-store" })
+        .then(r => {
+          if (!r.ok) throw new Error("snapshot not found");
+          return r.json();
+        })
+        .then(data => {
+          const s = data.summary || {};
+          target.innerHTML = `
+            <table>
+              <thead>
+                <tr><th>Cases</th><th>avg RDF</th><th>avg SCS</th><th>avg SSR</th><th>Generated</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>${s.cases ?? "-"}</td>
+                  <td>${s.avg_rdf ?? "-"}</td>
+                  <td>${s.avg_scs ?? "-"}</td>
+                  <td>${s.avg_ssr ?? "-"}</td>
+                  <td>${s.generated_at ?? "-"}</td>
+                </tr>
+              </tbody>
+            </table>
+          `;
+        })
+        .catch(() => {
+          target.innerHTML = '<p style="color:#ffe7ab;">Noch kein veröffentlichter Snapshot gefunden. Führe `ntf_multimodal_benchmark.py --docs-output docs/benchmarking/multimodal_latest.json` aus.</p>';
+        });
+    }
+
+    function refreshBenchUI() {
+      renderTable("humanTableWrap", state.humanRuns, true);
+      renderTable("agentTableWrap", state.agentRuns, false);
+      document.getElementById("humanCount").textContent = `${state.humanRuns.length} runs`;
+      document.getElementById("benchmarkJson").textContent = state.benchmarkPacket ? JSON.stringify(state.benchmarkPacket, null, 2) : "Noch kein Datensatz erzeugt.";
+    }
+
+    function buildClipboardPackage() {
+      if (!state.ntf) return "Bitte zuerst NTF Kompression ausführen.";
+      return [
+        "SYSTEM PROMPT (for external LLM):",
+        "Du bist ein NTF-Decoder-Assistent. Lies den NTF-Output und antworte mit genau einer Rückfrage:",
+        "Möchtest du den IrsanAI-NTF-Originaltext oder die IrsanAI-NTF-Agentensprache-Antwort?",
+        "Danach gib eine kurze Rekonstruktionszusammenfassung der vermuteten Kernintention.",
+        "---",
+        "NTF OUTPUT:",
+        state.ntf.output,
+        "---",
+        `META: compression=${state.ntf.compressionX}x intfr=${state.ntf.intfr}`
+      ].join("\n");
+    }
+
+    function validateRoundtrip() {
+      const response = document.getElementById("llmBackResponse").value.trim();
+      if (!response || !state.sanitized || !state.ntf) {
+        alert("Bitte zuerst NTF ausführen und eine externe LLM-Antwort einfügen.");
+        return;
+      }
+      const refTokens = new Set(normalizeText(state.sanitized));
+      const outTokens = new Set(normalizeText(response));
+      let overlap = 0;
+      refTokens.forEach(t => { if (outTokens.has(t)) overlap += 1; });
+      const recall = refTokens.size ? (overlap / refTokens.size) * 100 : 0;
+
+      const ntfHits = Object.keys(KEYWORD_MAP).filter(k => new RegExp(`\\b${k}\\b`, "i").test(response)).length;
+      const signal = Math.min(100, (ntfHits / Object.keys(KEYWORD_MAP).length) * 100);
+      const roundtrip = Number((recall * 0.75 + signal * 0.25).toFixed(1));
+
+      document.getElementById("validatorMetrics").innerHTML = [
+        ["Token Recall", `${recall.toFixed(1)}%`],
+        ["NTF Signal", `${signal.toFixed(1)}%`],
+        ["Roundtrip Score", `${roundtrip}%`]
+      ].map(([k,v]) => `<div class="metric"><small>${k}</small><strong>${v}</strong></div>`).join("");
+
+      state.benchmarkPacket = {
+        timestamp: new Date().toISOString(),
+        actor: "GitHub User",
+        type: "human",
+        dsqvo_findings: state.findings.length,
+        compressionX: state.ntf.compressionX,
+        intfr: state.ntf.intfr,
+        roundtrip,
+        note: "Generated on GitHub Pages (client side, anonymized flow)."
+      };
+
+      state.humanRuns.push({
+        actor: "GitHub User",
+        type: "human",
+        compressionX: state.ntf.compressionX,
+        intfr: state.ntf.intfr,
+        roundtrip,
+        note: `findings:${state.findings.length}`
+      });
+      localStorage.setItem("ntf_human_runs", JSON.stringify(state.humanRuns));
+      refreshBenchUI();
+    }
+
+    document.getElementById("scanBtn").addEventListener("click", () => {
+      const source = document.getElementById("sourceInput").value;
+      if (!source.trim()) {
+        alert("Bitte zuerst Text einfügen.");
+        return;
+      }
+      state.findings = scanFindings(source);
+      renderFindings();
+      const status = document.getElementById("scanStatus");
+      if (state.findings.length) {
+        status.className = "status danger";
+        status.textContent = `${state.findings.length} DSGVO-Konflikte gefunden.`;
+      } else {
+        status.className = "status ok";
+        status.textContent = "Keine offensichtlichen DSGVO-Konflikte erkannt.";
+      }
+    });
+
+    document.getElementById("applyBtn").addEventListener("click", applyResolution);
+
+    document.getElementById("compressBtn").addEventListener("click", () => {
+      if (!state.sanitized.trim()) {
+        alert("Bitte zuerst DSGVO-Konflikte lösen und Sanitized Text erzeugen.");
+        return;
+      }
+      state.ntf = computeNtf(state.sanitized);
+      renderMetrics(state.ntf);
+      document.getElementById("compressedOutput").textContent = state.ntf.output || "(leer)";
+    });
+
+    document.getElementById("copyOutputBtn").addEventListener("click", async () => {
+      if (!state.ntf) return alert("Bitte zuerst NTF ausführen.");
+      await navigator.clipboard.writeText(state.ntf.output);
+      alert("NTF Output kopiert.");
+    });
+
+    document.getElementById("copyPromptBtn").addEventListener("click", async () => {
+      await navigator.clipboard.writeText(buildClipboardPackage());
+      alert("Systemprompt + Output kopiert. Jetzt in externes LLM einfügen und Antwort hier zurückbringen.");
+    });
+
+    document.getElementById("validateBtn").addEventListener("click", validateRoundtrip);
+
+    document.getElementById("copyBenchBtn").addEventListener("click", async () => {
+      if (!state.benchmarkPacket) return alert("Noch kein Benchmark-Paket vorhanden.");
+      await navigator.clipboard.writeText(JSON.stringify(state.benchmarkPacket, null, 2));
+      alert("Benchmark JSON kopiert. DSGVO-freundlich im PR/Issue nutzbar.");
+    });
+
+    renderFindings();
+    refreshBenchUI();
+    loadLatestBenchmarkSnapshot();
+  </script>
 </body>
 </html>

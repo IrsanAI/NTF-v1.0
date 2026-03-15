@@ -1,0 +1,2 @@
+{"id":"code_001","text":"Refactor notes with weave + consensus.\n\n```python\ndef normalize(x):\n    return x.strip().lower()\n```\n\n```js\nconst pipe = (x) => x.trim().toLowerCase();\n```"}
+{"id":"code_002","text":"Build artifact note\n\n```python\ndef broken(:\n    return 1\n```\n\n{\"component\":\"parser\",\"status\":\"draft\"}"}
