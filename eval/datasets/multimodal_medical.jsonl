@@ -1,0 +1,2 @@
+{"id":"med_001","text":"Clinical note: pulse elevated, mirror with last checkpoint.\n\n```python\ndef triage(hr, spo2):\n    return 'urgent' if hr > 120 or spo2 < 90 else 'observe'\n```\n\n{\"patient_id\":\"anon-14\",\"spo2\":89}"}
+{"id":"med_002","text":"Medication summary with synthesis for morning round.\n\n```json\n{\"drug\":\"X\",\"dose_mg\":25}\n```"}
