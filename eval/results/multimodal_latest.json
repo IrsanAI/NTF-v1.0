@@ -1,0 +1,39 @@
+{
+  "summary": {
+    "cases": 3,
+    "avg_rdf": 99.83,
+    "avg_scs": 100.0,
+    "avg_ssr": 79.33,
+    "min_case_rdf": 99.7,
+    "min_case_scs": 100.0,
+    "min_case_ssr": 38.0,
+    "generated_at": "2026-03-15T13:57:45.137630+00:00",
+    "dataset": "eval/datasets/multimodal_regression.jsonl"
+  },
+  "results": [
+    {
+      "id": "case_001",
+      "segments_detected": 3,
+      "rdf": 99.7,
+      "scs": 100.0,
+      "ssr": 100.0,
+      "risk_level": "low"
+    },
+    {
+      "id": "case_002",
+      "segments_detected": 2,
+      "rdf": 100.0,
+      "scs": 100.0,
+      "ssr": 38.0,
+      "risk_level": "high"
+    },
+    {
+      "id": "case_003",
+      "segments_detected": 3,
+      "rdf": 99.8,
+      "scs": 100.0,
+      "ssr": 100.0,
+      "risk_level": "low"
+    }
+  ]
+}
