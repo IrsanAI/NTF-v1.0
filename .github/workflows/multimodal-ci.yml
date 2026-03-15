@@ -1,0 +1,41 @@
+name: multimodal-ci
+
+on:
+  push:
+    branches: ["main", "work"]
+  pull_request:
+
+jobs:
+  test-and-benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install test deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest cryptography
+
+      - name: Run multimodal tests
+        run: |
+          python -m pytest -q test_ntf_roundtrip.py test_ntf_multimodal_benchmark.py
+
+      - name: Run comprehensive suite
+        run: |
+          python test_ntf_comprehensive.py
+
+      - name: Run multimodal benchmark and persist report
+        run: |
+          python ntf_multimodal_benchmark.py --dataset eval/datasets/multimodal_regression.jsonl --output eval/results/multimodal_latest.json --json
+
+      - name: Upload benchmark artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: multimodal-benchmark
+          path: eval/results/multimodal_latest.json
