@@ -516,7 +516,7 @@
           target.innerHTML = `
             <table>
               <thead>
-                <tr><th>Cases</th><th>avg RDF</th><th>avg SCS</th><th>avg SSR</th><th>Generated</th></tr>
+                <tr><th>Cases</th><th>avg RDF</th><th>avg SCS</th><th>avg SSR</th><th>min RDF</th><th>min SCS</th><th>min SSR</th><th>Generated</th></tr>
               </thead>
               <tbody>
                 <tr>
@@ -524,6 +524,9 @@
                   <td>${s.avg_rdf ?? "-"}</td>
                   <td>${s.avg_scs ?? "-"}</td>
                   <td>${s.avg_ssr ?? "-"}</td>
+                  <td>${s.min_case_rdf ?? "-"}</td>
+                  <td>${s.min_case_scs ?? "-"}</td>
+                  <td>${s.min_case_ssr ?? "-"}</td>
                   <td>${s.generated_at ?? "-"}</td>
                 </tr>
               </tbody>

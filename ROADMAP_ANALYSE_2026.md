@@ -27,10 +27,14 @@ Strategischer Intent: **von einer prototypischen Kompressionsmethode zu einer be
 - Moderne FluxLab GitHub Page ist umgesetzt (`docs/index.html`).
 - Lizenz ergänzt (`LICENSE`).
 - Test-Baseline auf 100% in der vorhandenen Suite korrigiert (INTFR-Rundungserwartung in `test_ntf_comprehensive.py`).
-- **Neu:** Multimodal Pipeline v0.1 als nächster Umsetzungsschritt (`ntf_multimodal_pipeline.py`, `test_ntf_roundtrip.py`).
+- **Neu:** Multimodal Pipeline v0.3 als laufender Umsetzungsschritt (`ntf_multimodal_pipeline.py`, `test_ntf_roundtrip.py`).
+- RDF mit semantischer Komponente (lexical + sequence + semantic overlap) als Baseline integriert.
+- SCS AST-aware erweitert (Python + JS/TS + JSON) und SSR kontextsensitiv gehärtet.
+- RDF um optionales Embedding-Backend erweitert (sentence-transformers, fallback: trigram-cosine) mit `semantic_similarity` + Backend-Transparenz.
+- SCS AST-aware auf Java/Go/Rust erweitert.
 
 ### Open
-- RDF/SCS/SSR Metriken noch nicht als stabile API implementiert.
+- RDF/SCS/SSR Metriken sind als baseline implementiert, aber noch nicht final standardisiert.
 - Keine produktive Persistenz für Multimodal-Run-Historie.
 - MindMaster-Komponenten weiterhin Skeleton-Stufe.
 
@@ -40,7 +44,7 @@ Strategischer Intent: **von einer prototypischen Kompressionsmethode zu einer be
 
 ### A) NTF-seitig
 - Aktueller NTF-Kern ist in v1 keyword- und run-basiert.
-- Für v2 fehlen noch ausgereifte Strukturmetriken (RDF, SCS) und Security-Signale (SSR).
+- Für v2 fehlen noch ausgereifte, modellgestützte Varianten von RDF/SCS/SSR über die aktuelle Baseline hinaus.
 - Safety-/Robustness-Layer gegen Prompt-Injection ist noch baseline-only.
 
 ### B) Evaluation-seitig
@@ -127,9 +131,8 @@ Bereits umgesetzt als v0.3-Basis:
   - Per-Case-Gates zusätzlich zu Durchschnittswerten
 
 Nächste Iteration:
-- RDF von lexical + sequence blend auf stärkere semantische Metrik (Embedding/Model-based) erweitern.
-- SCS AST-aware auf weitere Sprachen ausbauen.
 - SSR auf kontextsensitives Risk-Scoring mit weniger Regex-Approximation vertiefen.
+- RDF-Embedding Backend aus optional auf reproduzierbar versionierte Modellpfade + Caching operationalisieren.
 
 ---
 

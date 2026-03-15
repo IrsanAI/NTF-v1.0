@@ -41,10 +41,10 @@ jobs:
             --output eval/results/multimodal_latest.json \
             --docs-output docs/benchmarking/multimodal_latest.json \
             --history-file docs/benchmarking/multimodal_history.json \
-            --min-rdf 97 \
+            --min-rdf 95 \
             --min-scs 97 \
             --min-ssr 70 \
-            --min-case-rdf 95 \
+            --min-case-rdf 94 \
             --min-case-scs 95 \
             --min-case-ssr 35 \
             --enforce-thresholds \

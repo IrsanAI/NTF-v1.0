@@ -75,9 +75,25 @@ print('safe')
     security = result["payload"]["security"]
 
     assert "rdf" in metrics and "token_recall" in metrics and "token_jaccard" in metrics
-    assert "char_similarity" in metrics and "scs" in metrics and "ast_pass_rate" in metrics
+    assert "char_similarity" in metrics and "semantic_overlap" in metrics
+    assert "semantic_similarity" in metrics and "semantic_backend" in metrics
+    assert "scs" in metrics and "ast_pass_rate" in metrics
     assert security["marker_count"] >= 1
     assert security["risk_level"] in {"low", "medium", "high"}
+    assert "imperative_score" in security
+    assert "marker_density" in security
+
+
+def test_scs_ast_check_for_js_language_hint():
+    text = """Refactor block.
+
+```js
+const v = 1;
+const out = (x) => x + v;
+```
+"""
+    result = run_pipeline(text)
+    assert result["payload"]["metrics"]["ast_pass_rate"] >= 100.0
 
 
 def test_cli_json_output(tmp_path):
@@ -94,3 +110,39 @@ def test_cli_json_output(tmp_path):
     assert data["segments_detected"] >= 1
     assert data["payload"]["schema"] == "ntf.multimodal"
     assert "ssr" in data["payload"]["security"]
+
+
+def test_scs_ast_checks_additional_languages():
+    text = """
+```java
+public class A {
+  public static void main(String[] args) {
+    System.out.println("x");
+  }
+}
+```
+
+```go
+package main
+
+func main() {
+    println("ok")
+}
+```
+
+```rust
+fn main() {
+    let x = 1;
+    println!("{}", x);
+}
+```
+"""
+    result = run_pipeline(text)
+    assert result["payload"]["metrics"]["ast_pass_rate"] == 100.0
+
+
+def test_semantic_backend_is_reported():
+    text = "Flux anchor roadmap and delivery plan."
+    result = run_pipeline(text)
+    backend = result["payload"]["metrics"]["semantic_backend"]
+    assert backend in {"sentence-transformers", "trigram-fallback", "empty-input"}

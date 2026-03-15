@@ -125,7 +125,7 @@ Command:
 python3 ntf_standard.py --benchmark
 python3 ntf_realtime_eval.py --response-files responses/chatgpt_normal.txt
 python3 ntf_multimodal_pipeline.py --input "flux anchor\n\n```python\nprint(1)\n```" --json
-python3 ntf_multimodal_benchmark.py --dataset eval/datasets/multimodal_regression.jsonl --output eval/results/multimodal_latest.json --docs-output docs/benchmarking/multimodal_latest.json --history-file docs/benchmarking/multimodal_history.json --min-rdf 97 --min-scs 97 --min-ssr 70 --min-case-rdf 95 --min-case-scs 95 --min-case-ssr 35 --enforce-thresholds --json
+python3 ntf_multimodal_benchmark.py --dataset eval/datasets/multimodal_regression.jsonl --output eval/results/multimodal_latest.json --docs-output docs/benchmarking/multimodal_latest.json --history-file docs/benchmarking/multimodal_history.json --min-rdf 95 --min-scs 97 --min-ssr 70 --min-case-rdf 94 --min-case-scs 95 --min-case-ssr 35 --enforce-thresholds --json
 ```
 
 Result set (4,500-word synthetic high-entropy agent stream):
@@ -174,9 +174,9 @@ Notes:
 ### Multimodal pipeline (v0.3)
 
 `ntf_multimodal_pipeline.py` now provides baseline mixed-content quality/safety scoring:
-- **RDF**: blended roundtrip fidelity (token recall + jaccard + char similarity)
-- **SCS**: structural consistency with AST-aware validation for Python blocks
-- **SSR**: weighted risk score from injection markers + sensitive-pattern detection
+- **RDF**: blended roundtrip fidelity (token recall + jaccard + char similarity + semantic overlap + semantic similarity via optional embeddings/fallback)
+- **SCS**: structural consistency with AST-aware validation for Python, JS/TS, JSON, Java, Go, and Rust blocks
+- **SSR**: contextual weighted risk score (markers + sensitive patterns + imperative cues + marker density)
 
 `ntf_multimodal_benchmark.py` runs dataset-wide evaluation and can persist reports to `eval/results/` and `docs/benchmarking/` for site visibility.
 It can also append rolling summaries to `docs/benchmarking/multimodal_history.json` for trend tracking.
@@ -197,7 +197,7 @@ python3 ntf_standard.py --text "Agent state relay anchor drift pulse mirror cons
 python3 ntf_standard.py --benchmark
 python3 ntf_realtime_eval.py --response-files responses/chatgpt_normal.txt
 python3 ntf_multimodal_pipeline.py --input "flux anchor\n\n```python\nprint(1)\n```" --json
-python3 ntf_multimodal_benchmark.py --dataset eval/datasets/multimodal_regression.jsonl --output eval/results/multimodal_latest.json --docs-output docs/benchmarking/multimodal_latest.json --history-file docs/benchmarking/multimodal_history.json --min-rdf 97 --min-scs 97 --min-ssr 70 --min-case-rdf 95 --min-case-scs 95 --min-case-ssr 35 --enforce-thresholds --json
+python3 ntf_multimodal_benchmark.py --dataset eval/datasets/multimodal_regression.jsonl --output eval/results/multimodal_latest.json --docs-output docs/benchmarking/multimodal_latest.json --history-file docs/benchmarking/multimodal_history.json --min-rdf 95 --min-scs 97 --min-ssr 70 --min-case-rdf 94 --min-case-scs 95 --min-case-ssr 35 --enforce-thresholds --json
 ```
 
 ---

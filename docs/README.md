@@ -23,9 +23,9 @@ Die GitHub Page wurde zu einer modernen, interaktiven **FluxLab-Erfahrung** migr
 ## Multimodal Pipeline & Benchmarking (Repo-Ebene)
 
 - `ntf_multimodal_pipeline.py` (v0.3) liefert baseline Scores für:
-  - RDF (Roundtrip-Fidelity)
-  - SCS (Structural-Consistency)
-  - SSR (Security-Robustness)
+  - RDF (Roundtrip-Fidelity inkl. semantischem Overlap + semantischer Similarity/Backend)
+  - SCS (Structural-Consistency inkl. AST-Checks für Python, JS/TS, JSON, Java, Go, Rust)
+  - SSR (Security-Robustness mit kontextsensitiver Risikologik)
 - `ntf_multimodal_benchmark.py` führt Dataset-Benchmarks aus und kann Reports in `eval/results/` persistieren.
 - CI-Workflow `.github/workflows/multimodal-ci.yml` prüft Multimodal-Tests + Benchmark bei Push/PR.
 - Neuester Benchmark-Snapshot wird als `docs/benchmarking/multimodal_latest.json` bereitgestellt und kann in der Page automatisch geladen werden.

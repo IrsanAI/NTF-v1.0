@@ -22,11 +22,14 @@
 - [x] Drift-Analyse: automatische Delta-Berechnung zwischen History-Runs
 - [x] Dataset-Coverage auf >500 Cases erweitert (`multimodal_expanded_600.jsonl`)
 - [x] CI Quality Gates um Per-Case Floor-Werte ergänzt
+- [x] RDF baseline um semantischen Overlap erweitert
+- [x] SCS AST-Checks über Python hinaus erweitert (JS/TS/JSON)
+- [x] SSR baseline auf kontextsensitives Risk-Scoring erweitert
 
 ## In Progress
-- [ ] Realistische RDF-Variante mit stärkerer Semantikkomponente (Embedding/Model-based)
-- [ ] SCS erweitern (AST-aware checks über Python hinaus)
-- [ ] SSR erweitern (kontextsensitives Risk-Scoring statt Regex/Marker-only)
+- [x] Realistische RDF-Variante mit stärkerer Modell-Semantik (optional sentence-transformers + trigram fallback)
+- [x] SCS AST-Checks auf weitere Sprachen vertieft (Java/Go/Rust)
+- [ ] SSR Risk-Scoring von heuristisch zu lern-/regelhybrid entwickeln
 
 ## Next (highest priority)
 - [ ] Delta-Drift visualisieren (Sparkline/Chart statt Tabelle)

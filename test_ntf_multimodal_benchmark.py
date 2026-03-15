@@ -63,6 +63,14 @@ def test_threshold_checks_return_flags():
     assert flags["pass_case_ssr"] is True
 
 
+def test_summary_has_per_case_minima():
+    out = run_benchmark(Path("eval/datasets/multimodal_regression.jsonl"))
+    summary = out["summary"]
+    assert summary["min_case_rdf"] <= summary["avg_rdf"]
+    assert summary["min_case_scs"] <= summary["avg_scs"]
+    assert summary["min_case_ssr"] <= summary["avg_ssr"]
+
+
 def test_append_history_entry_has_delta(tmp_path):
     out = run_benchmark(Path("eval/datasets/multimodal_regression.jsonl"))
     hist_path = tmp_path / "hist.json"
